@@ -77,6 +77,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Special thanks to the NestJS, GraphQL, and TypeScript communities for providing excellent tools and resources.
+- Special thanks to the React, GraphQL, and TypeScript communities for providing excellent tools and resources.
 
 Happy Planning Poker! 🃏✨
