@@ -8,6 +8,7 @@ module.exports = {
   entry: "./src/index.tsx",
   devServer: {
     host: '0.0.0.0',
+    allowedHosts: "all",
     port: configuration.config().APP_PORT,
   },
   devtool: "source-map",
