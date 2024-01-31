@@ -1,5 +1,5 @@
 # Base image
-FROM node:18-alpine
+FROM node:18-alpine as build
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -18,5 +18,9 @@ COPY --chown=node:node . .
 # Set NODE_ENV environment variable
 ENV NODE_ENV prod
 
+RUN npm run build
+
 # Start the server
-CMD [ "npm", "start" ]
+FROM nginx:alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+EXPOSE 80
