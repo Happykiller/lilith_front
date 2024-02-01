@@ -10,8 +10,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 
-import './index.scss';
-import Root from './components/Root';
+import '@src/index.scss';
+import Root from '@component/Root';
 
 const wsLink = new GraphQLWsLink(createClient({
   url: process.env.APP_WS_URL,

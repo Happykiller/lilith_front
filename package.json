@@ -25,7 +25,8 @@
     "react-svg": "^16.1.17",
     "style-loader": "^3.3.2",
     "styled-components": "^5.3.11",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",

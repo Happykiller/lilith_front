@@ -13,7 +13,11 @@ module.exports = {
   },
   devtool: "source-map",
   resolve: { 
-    extensions: [".ts", ".tsx", ".js", ".json", '.scss', '.svg'] 
+    extensions: [".ts", ".tsx", ".js", ".json", '.scss', '.svg'],
+    alias: {
+      '@src': path.resolve(__dirname, 'src/'),
+      '@component': path.resolve(__dirname, 'src/component/'),
+    },
   }, 
   output: { 
     path: path.join(__dirname, "/dist"), 

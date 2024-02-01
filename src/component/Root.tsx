@@ -11,8 +11,12 @@ import RestartAlt from '@mui/icons-material/RestartAlt';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useMutation, useQuery, useSubscription } from "@apollo/client";
 
-import './root.scss';
-import { GQL } from '../common/gql';
+import '@component/root.scss';
+import { GQL } from '@src/common/gql';
+import { FormName } from '@src/component/FormName';
+import { FormSession } from '@component/FormSession';
+import { DebugSession } from '@component/DebugSession';
+import { sessionStore } from '@component/SessionStore';
 
 const Sessions = () => {
   const myContext = React.useContext(MyContext);
@@ -88,8 +92,8 @@ const Session = () => {
 
     let formCreateItem;
     if (
-      myContext.name
-      && data.session.members.includes(myContext.name)
+      sessionStore.getState().name
+      && data.session.members.includes(sessionStore.getState().name)
     ) {
       formCreateItem = <CreateItem />
     } else {
@@ -157,10 +161,10 @@ const Item = (param: {
       let formVote;
       if (
         currentItem
-        && myContext.name 
+        && sessionStore.getState().name 
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(myContext.name)
-        && !currentItem.votes.find((elt:any) => elt.member === myContext.name)
+        && param.session.members.includes(sessionStore.getState().name)
+        && !currentItem.votes.find((elt:any) => elt.member === sessionStore.getState().name)
       ) {
         formVote = <CreateVote
         session={param.session}
@@ -173,8 +177,8 @@ const Item = (param: {
       if (
         currentItem
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(myContext.name)
-        && myContext.name === currentItem.author
+        && param.session.members.includes(sessionStore.getState().name)
+        && sessionStore.getState().name === currentItem.author
       ) {
         revealBt = <form
         onSubmit={e => { 
@@ -215,7 +219,7 @@ const Item = (param: {
                 } else {
                   return
                 }
-              } else if (vote.member === myContext.name) {
+              } else if (vote.member === sessionStore.getState().name) {
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={member}>
@@ -287,7 +291,7 @@ const CreateVote = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (myContext.name && param.session.members.find((elt:any) => elt.name === myContext.name)) {
+  if (sessionStore.getState().name && param.session.members.find((elt:any) => elt.name === sessionStore.getState().name)) {
     return <p></p>
   } else {
     return (
@@ -297,7 +301,7 @@ const CreateVote = (param: {
             e.preventDefault();
             CreateVoteSmt({ variables: { 
               sessionId: myContext.sessionId,
-              member: myContext.name,
+              member: sessionStore.getState().name,
               vote: vote,
               itemId: myContext.itemId
             } });
@@ -335,14 +339,14 @@ const JoinSession = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (!myContext.name) {
+  if (!sessionStore.getState().name) {
     return (
       <div>
         Merci de vous identifier
       </div>
     )
   } else {
-    if (!param.session.members.includes(myContext.name)) {
+    if (!param.session.members.includes(sessionStore.getState().name)) {
       return (
         <div>
           <form className="formJoinSession"
@@ -350,7 +354,7 @@ const JoinSession = (param: {
               e.preventDefault();
               joinSessionSmt({ variables: { 
                 sessionId: myContext.sessionId,
-                username: myContext.name
+                username: sessionStore.getState().name
               } });
             }}
           >
@@ -367,41 +371,7 @@ const JoinSession = (param: {
   }
 };
 
-const CreateSession = () => {
-  const [name, setName] = useState('');
-  const [createSessionSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_SESSION);
 
-  if (error) return <p>`Error! ${error.message}`</p>;
-
-  return (
-    <div>
-      <form className="formCreateSession"
-        onSubmit={e => {
-          e.preventDefault();
-          createSessionSmt({ 
-            variables: { name } 
-          });
-          setName('');
-        }}
-      >
-        <TextField
-          label="Session name"
-          variant="standard"
-          size="small"
-          value={name}
-          onChange={(e) => { setName(e.target.value) }}
-        />
-        <Button 
-          type="submit"
-          variant="contained"
-          size="small"
-          disabled={!(name && name.length > 3)}
-          startIcon={<Add />}
-        >Create</Button>
-      </form>
-    </div>
-  );
-};
 
 const CreateItem = () => {
   const myContext = React.useContext(MyContext);
@@ -418,7 +388,7 @@ const CreateItem = () => {
           createSessionSmt({ variables: { 
             name, 
             sessionId: myContext.sessionId,
-            author: myContext.name
+            author: sessionStore.getState().name
           } });
           setName('');
         }}
@@ -435,49 +405,12 @@ const CreateItem = () => {
           variant="contained"
           size="small"
           startIcon={<Add />}
-          disabled={!(name && name.length > 3) || myContext.name === null}
+          disabled={!(name && name.length > 3) || sessionStore.getState().name === null}
         >Create</Button>
       </form>
     </div>
   );
 };
-
-const SetName = () => {
-  const [name, setName] = useState('');
-  const state = React.useContext(MyContext);
-
-  if (!state.name) {
-    return (
-      <form className="formSetUserName"
-        onSubmit={e => {
-          e.preventDefault();
-          state.setName(name);
-          setName('');
-        }}
-      >
-        <TextField
-          label="User name"
-          variant="standard"
-          size="small"
-          onChange={(e) => { 
-            setName(e.target.value) 
-          }}
-        />
-        <Button 
-          type="submit"
-          variant="contained"
-          size="small"
-          startIcon={<Add />}
-          disabled={!(name && name.length > 3)}
-        >Record</Button>
-      </form>
-    )
-  } else {
-    return <p>
-      <u>Name:</u> : {state.name}
-    </p>
-  }
-}
  
 interface RootProps {
   param?: string
@@ -548,13 +481,14 @@ class Root extends React.Component<RootProps, AppState> {
       <div className='root'>
         <MyContext.Provider value={myContextValue}>
           <h1>Lilith</h1>
+          <DebugSession />
           <div className='app-container '>
             <div className='left-container'>
               <Session/>
             </div>
             <div className='right-container'>
-              <SetName />
-              <CreateSession />
+              <FormName />
+              <FormSession />
               <Sessions/>
             </div>
           </div>
@@ -565,4 +499,3 @@ class Root extends React.Component<RootProps, AppState> {
 }
  
 export default Root;
-
