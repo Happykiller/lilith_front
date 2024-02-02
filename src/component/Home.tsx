@@ -5,6 +5,7 @@ import { FormLogin } from './FormLogin';
 import { ContextStore, contextStore } from './ContextStore';
 import { Button } from '@mui/material';
 import { Login } from '@mui/icons-material';
+import { Version } from './Version';
 
 export const Home = () => {
   
@@ -23,7 +24,7 @@ export const Home = () => {
       <h1><Trans>home.title</Trans></h1>
       <FormLogin />
       {entry}
-      <h3>Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - Front version: 0.1.0 - Apis version: 0.1.0 - <a href="https://github.com/Happykiller">Github</a></h3>
+      <h3>Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - Front version: <Version/> - Apis version: 0.1.0 - <a href="https://github.com/Happykiller">Github</a></h3>
     </div>
   )
 }

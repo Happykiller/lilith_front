@@ -6,5 +6,8 @@
   "home": {
     "title": "Le Poker Planning Lilith",
     "enter": "Entrer"
+  },
+  "version": {
+    "label": "Version : "
   }
 }
