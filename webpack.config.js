@@ -10,6 +10,7 @@ module.exports = {
     host: '0.0.0.0',
     allowedHosts: "all",
     port: configuration.config().APP_PORT,
+    historyApiFallback: true,
   },
   devtool: "source-map",
   resolve: { 
@@ -21,7 +22,8 @@ module.exports = {
   }, 
   output: { 
     path: path.join(__dirname, "/dist"), 
-    filename: "index_bundle.js"
+    filename: "index_bundle.js",
+    publicPath: '/'
   }, 
   module: { 
     rules: [

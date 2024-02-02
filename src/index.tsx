@@ -9,9 +9,35 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { ApolloProvider, DefaultOptions } from "@apollo/client";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import '@src/i18n';
 import '@src/index.scss';
 import Root from '@component/Root';
+import { Home } from '@component/Home';
+import { Play } from '@component/PLay';
+import { Admin } from '@component/Admin';
+import { Guard } from './component/Guard';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/root",
+    element: <Guard><Root /></Guard>,
+  },
+  {
+    path: "/admin",
+    element: <Guard><Admin /></Guard>,
+  },
+  {
+    path: "/play",
+    element: <Play />,
+  }
+]);
+
 
 const wsLink = new GraphQLWsLink(createClient({
   url: process.env.APP_WS_URL,
@@ -107,13 +133,11 @@ const darkTheme = createTheme({
   },
 });
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(
+createRoot(document.getElementById("root")).render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Root />
+      <RouterProvider router={router} />
     </ThemeProvider>
   </ApolloProvider>
 );
