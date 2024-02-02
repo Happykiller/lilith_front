@@ -12,5 +12,6 @@ exports.config = (config) => {
     APP_WS_URL: merged?.APP_WS_URL??'ws://localhost:3000/graphql',
     APP_API_TOKEN: merged?.APP_API_TOKEN??'token',
     APP_VESION: merged?.APP_VESION??'0.0.0',
+    APP_DEBUG: merged?.APP_DEBUG??false,
   }
 };

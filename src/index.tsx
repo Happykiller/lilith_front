@@ -1,12 +1,12 @@
 import React = require('react');
 import { createClient } from 'graphql-ws';
 import { createRoot } from 'react-dom/client';
-import { ApolloProvider, DefaultOptions } from "@apollo/client";
 import { split, HttpLink } from "@apollo/client";
 import CssBaseline from '@mui/material/CssBaseline';
 import { setContext } from "@apollo/client/link/context";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { ApolloProvider, DefaultOptions } from "@apollo/client";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 
@@ -113,7 +113,7 @@ root.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Root param='Max' />
+      <Root />
     </ThemeProvider>
   </ApolloProvider>
 );

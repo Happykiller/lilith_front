@@ -2,17 +2,17 @@ import * as React from 'react';
 import { Add } from '@mui/icons-material';
 import { Button, TextField } from '@mui/material';
 
-import { sessionStore } from '@component/SessionStore';
+import { ContextStore, contextStore } from '@src/component/ContextStore';
 
-export const FormName = () => {
-  const {name} = sessionStore();
-  const [currentName, setCurrentName] = React.useState('');
-  if (!name) {
+export const FormLogin = () => {
+  const context:ContextStore = contextStore();
+  const [currentLogin, setCurrentLogin] = React.useState('');
+  if (!context.login) {
     return (
       <form className="formSetUserName"
         onSubmit={e => {
           e.preventDefault();
-          sessionStore.setState({ name: currentName });
+          contextStore.setState({ login: currentLogin });
         }}
       >
         <TextField
@@ -20,7 +20,7 @@ export const FormName = () => {
           variant="standard"
           size="small"
           onChange={(e) => { 
-            setCurrentName(e.target.value);
+            setCurrentLogin(e.target.value);
           }}
         />
         <Button 
@@ -28,13 +28,13 @@ export const FormName = () => {
           variant="contained"
           size="small"
           startIcon={<Add />}
-          disabled={!(currentName.length > 3)}
+          disabled={!(currentLogin.length > 3)}
         >Record</Button>
       </form>
     )
   } else {
     return <p>
-      <u>Name:</u> {name}
+      <u>Name:</u> {context.login}
     </p>
   }
 }
