@@ -1,23 +1,24 @@
 import * as React from 'react';
-import { Add, Cancel, Done } from '@mui/icons-material';
-import { Button, TextField } from '@mui/material';
-
-import { ContextStore, contextStore } from '@src/component/ContextStore';
 import { Trans } from 'react-i18next';
+import { Cancel, Done } from '@mui/icons-material';
+import { Button, IconButton, TextField } from '@mui/material';
+
+import '@component/formLogin.scss';
+import { ContextStore, contextStore } from '@src/component/ContextStore';
 
 export const FormLogin = () => {
   const context:ContextStore = contextStore();
   const [currentLogin, setCurrentLogin] = React.useState('');
   if (!context.login) {
     return (
-      <form className="formSetUserName"
+      <form className="containerFormLogin"
         onSubmit={e => {
           e.preventDefault();
           contextStore.setState({ login: currentLogin });
         }}
       >
         <TextField
-          label="User name"
+          label={<Trans>formLogin.login.label</Trans>}
           variant="standard"
           size="small"
           onChange={(e) => { 
@@ -34,19 +35,21 @@ export const FormLogin = () => {
       </form>
     )
   } else {
-    return <form className="formSetUserName"
+    return <form className="containerFormLogin"
       onSubmit={e => {
         e.preventDefault();
         contextStore.setState({ login: '' });
       }}
     >
-      <h3>{context.login}</h3>
-      <Button 
-        type="submit"
-        variant="contained"
-        size="small"
-        startIcon={<Cancel />}
-      ><Trans>common.cancel</Trans></Button>
+      <div className='name'>
+        <Trans>formLogin.name</Trans>{context.login}
+        <IconButton 
+          type="submit"
+          size="small"
+        >
+          <Cancel/>
+        </IconButton>
+      </div>
     </form>
   }
 }

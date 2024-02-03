@@ -3,11 +3,18 @@
     "done": "Valider",
     "cancel": "Annuler"
   },
+  "formLogin": {
+    "login": {
+      "label": "Entrer votre nom"
+    },
+    "name": "Nom : "
+  },
   "home": {
     "title": "Le Poker Planning Lilith",
     "enter": "Entrer"
   },
   "version": {
-    "label": "Version : "
+    "front": "Web: ",
+    "back": "Apis: "
   }
 }

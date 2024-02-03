@@ -121,7 +121,7 @@ const cache = new InMemoryCache({
   },
 });
 
-const client = new ApolloClient({
+export const apolloClient = new ApolloClient({
   link: authLink.concat(link),
   cache,
   defaultOptions
@@ -134,7 +134,7 @@ const darkTheme = createTheme({
 });
 
 createRoot(document.getElementById("root")).render(
-  <ApolloProvider client={client}>
+  <ApolloProvider client={apolloClient}>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <RouterProvider router={router} />

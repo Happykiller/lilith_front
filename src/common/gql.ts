@@ -173,4 +173,12 @@ export class GQL {
     }
   }
   `;
+
+  static QRY_SYSTEMINFO = gql`
+    query systemInfo {
+      systemInfo {
+        version
+      }
+    }
+  `;
 }

@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { FormLogin } from './FormLogin';
-import { ContextStore, contextStore } from './ContextStore';
 import { Button } from '@mui/material';
 import { Login } from '@mui/icons-material';
-import { Version } from './Version';
+
+import '@component/home.scss';
+import { Footer } from '@component/Footer';
+import { FormLogin } from '@component/FormLogin';
+import { ContextStore, contextStore } from '@component/ContextStore';
 
 export const Home = () => {
-  
   const context:ContextStore = contextStore();
 
-  const entry = (context.login)?<div>
+  const entry = (context.login)?<div className='entry'>
   <Button component={Link} to={'/root'}
     type="submit"
     variant="contained"
@@ -20,11 +21,15 @@ export const Home = () => {
 </div>:'';
 
   return (
-    <div>
-      <h1><Trans>home.title</Trans></h1>
-      <FormLogin />
-      {entry}
-      <h3>Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - Front version: <Version/> - Apis version: 0.1.0 - <a href="https://github.com/Happykiller">Github</a></h3>
+    <div className='containerHome'>
+      <div className='title'>
+        <Trans>home.title</Trans>
+      </div>
+      <div className='form'>
+        <FormLogin />
+        {entry}
+      </div>
+      <Footer />
     </div>
   )
 }
