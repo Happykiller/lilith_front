@@ -6,6 +6,11 @@ const configuration = require("./src/config")
  
 module.exports = { 
   entry: "./src/index.tsx",
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   devServer: {
     host: '0.0.0.0',
     allowedHosts: "all",
@@ -46,18 +51,7 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
-      },
-/*       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10000,
-            },
-          },
-        ],
-      }, */
+      }
     ]
   },
   plugins: [
