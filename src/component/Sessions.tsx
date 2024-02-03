@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import InputIcon from '@mui/icons-material/Input';
 import { Button, List, ListItem } from '@mui/material';
 
@@ -7,8 +8,8 @@ import { GQL } from '@src/common/gql';
 import { contextStore } from '@src/component/ContextStore';
 
 export const Sessions = () => {
-  const {sessionId} = contextStore();
   const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_SESSIONS);
+  const navigate = useNavigate();
 
   subscribeToMore({
     document: GQL.SUB_SESSIONS,
@@ -37,9 +38,9 @@ export const Sessions = () => {
                 variant="contained"
                 size="small"
                 startIcon={<InputIcon />}
-                disabled={(sessionId === session.id)}
                 onClick={(e) => {
-                  contextStore.setState({ sessionId: session.id });
+                  contextStore.setState({ sessionId: session.id, itemId: null });
+                  navigate("/play");
                 }}
               >{session.name}</Button>
             </div>

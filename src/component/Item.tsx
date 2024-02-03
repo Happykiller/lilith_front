@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useMutation } from "@apollo/client";
-import { Add, RestartAlt } from '@mui/icons-material';
-import { Button, List, ListItem } from '@mui/material';
+import { Trans, useTranslation } from 'react-i18next';
+import { Add, RestartAlt, Visibility } from '@mui/icons-material';
+import { Button, IconButton, List, ListItem } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
 import { CreateVote } from '@component/CreateVote';
@@ -12,6 +13,7 @@ export const Item = (param: {
 }) => {
   const context:ContextStore = contextStore();
   if (context.itemId) {
+    const { t } = useTranslation();
     const currentItem = param.session.items.find((item:any) => item.id === context.itemId);
 
     if (currentItem) {
@@ -53,8 +55,8 @@ export const Item = (param: {
           type="submit"
           variant="contained"
           size="small"
-          startIcon={<Add />}
-        >Reveal</Button>
+          startIcon={<Visibility />}
+        ><Trans>item.reveal</Trans></Button>
       </form>
       } else {
         revealBt = <p></p>
@@ -62,7 +64,7 @@ export const Item = (param: {
 
       return <div>
         <p>
-          <u>Item</u> : {currentItem.name} (state:{currentItem.state})
+          <u><Trans>item.item</Trans></u>{currentItem.name}
         </p>
         {revealBt}
         <List>
@@ -95,12 +97,13 @@ export const Item = (param: {
                           });
                         }}
                       >
-                        <Button 
+                        <IconButton 
                           type="submit"
-                          variant="contained"
                           size="small"
-                          startIcon={<RestartAlt />}
-                        >Reset</Button>
+                          title={t('item.reset')}
+                        >
+                          <RestartAlt/>
+                        </IconButton>
                       </form>
                     </ListItem>
                   )
@@ -120,7 +123,7 @@ export const Item = (param: {
               } else {
                 return (
                   <ListItem disablePadding key={member}>
-                    {vote.member} =&gt; Suspense
+                    {vote.member} =&gt; <Trans>item.suspence</Trans>
                   </ListItem>
                 )  
               }

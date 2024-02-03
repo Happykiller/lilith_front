@@ -13,7 +13,7 @@ export const Home = () => {
   const context:ContextStore = contextStore();
 
   const entry = (context.login)?<div className='entry'>
-  <Button component={Link} to={'/root'}
+  <Button component={Link} to={'/admin'}
     type="submit"
     variant="contained"
     size="small"

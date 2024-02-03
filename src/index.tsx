@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import { createClient } from 'graphql-ws';
 import { createRoot } from 'react-dom/client';
 import { split, HttpLink } from "@apollo/client";
@@ -13,7 +13,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import '@src/i18n';
 import '@src/index.scss';
-import Root from '@component/Root';
 import { Home } from '@component/Home';
 import { Play } from '@component/PLay';
 import { Admin } from '@component/Admin';
@@ -25,16 +24,12 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/root",
-    element: <Guard><Root /></Guard>,
-  },
-  {
     path: "/admin",
     element: <Guard><Admin /></Guard>,
   },
   {
     path: "/play",
-    element: <Play />,
+    element: <Guard><Play /></Guard>,
   }
 ]);
 

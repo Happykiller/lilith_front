@@ -8,6 +8,7 @@ import { Item } from '@component/Item';
 import { CreateItem } from '@component/CreateItem';
 import { JoinSession } from '@component/JoinSession';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
+import { Trans } from 'react-i18next';
 
 export const Session = () => {
   const context:ContextStore = contextStore();
@@ -49,18 +50,25 @@ export const Session = () => {
       formCreateItem = <p></p>
     }
 
+    let item = <p/>;
+    if (data.session && context.itemId ){
+      item = <Item
+        session={data.session}
+      />
+    }
+
     return (
       <div>
-        <p>
-          <u>Session</u> : {data.session.name}
-        </p>
+        <div className='title'>
+          {data.session.name}
+        </div>
         <JoinSession 
           session={data.session} 
         />
-        <p>
-          <u>Les items</u> :
-        </p>
         {formCreateItem}
+        <p>
+          <u><Trans>session.items</Trans></u>
+        </p>
         <List>
           {data.session.items.map((item: any) => (
             <ListItem disablePadding key={item.id}>
@@ -80,9 +88,7 @@ export const Session = () => {
             </ListItem>
           ))}
         </List>
-        <Item
-          session={data.session}
-        />
+        {item}
       </div>
     );
   } else {

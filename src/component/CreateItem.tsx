@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { Trans } from 'react-i18next';
 import { Add } from '@mui/icons-material';
 import { useMutation } from "@apollo/client";
-import { Button, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
@@ -26,20 +27,26 @@ export const CreateItem = () => {
           setItemLabel('');
         }}
       >
-        <TextField
-          label="Item name"
-          variant="standard"
-          size="small"
-          value={itemLabel}
-          onChange={(e) => { setItemLabel(e.target.value) }}
-        />
-        <Button 
-          type="submit"
-          variant="contained"
-          size="small"
-          startIcon={<Add />}
-          disabled={!(itemLabel && itemLabel.length > 3) || context.login === null}
-        >Create</Button>
+        <Box
+          display="flex"
+          alignItems="center"
+        >
+          <TextField
+            sx={{ marginRight:1}}
+            label={<Trans>createItem.label</Trans>}
+            variant="standard"
+            size="small"
+            value={itemLabel}
+            onChange={(e) => { setItemLabel(e.target.value) }}
+          />
+          <Button 
+            type="submit"
+            variant="contained"
+            size="small"
+            startIcon={<Add />}
+            disabled={!(itemLabel && itemLabel.length > 3) || context.login === null}
+          ><Trans>common.create</Trans></Button>
+        </Box>
       </form>
     </div>
   );

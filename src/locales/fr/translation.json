@@ -1,7 +1,17 @@
 {
+  "admin": {
+    "title": "Les sessions"
+  },
+  "createItem": {
+    "label": "Entrer le nom d'item"
+  },
+  "createVote": {
+    "vote": "Voter"
+  },
   "common": {
     "done": "Valider",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "create": "Créer"
   },
   "formLogin": {
     "login": {
@@ -9,9 +19,26 @@
     },
     "name": "Nom : "
   },
+  "formSession": {
+    "session": {
+      "label": "Entrer le nom de session"
+    }
+  },
+  "item": {
+    "item": "Item en cours : ",
+    "reveal": "Révéler à tous",
+    "reset": "Effacer",
+    "suspence": "Suspence"
+  },
   "home": {
     "title": "Le Poker Planning Lilith",
     "enter": "Entrer"
+  },
+  "session": {
+    "items": "Les items : "
+  },
+  "play": {
+    "title": "La session"
   },
   "version": {
     "front": "Web: ",

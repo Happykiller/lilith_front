@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { Trans } from 'react-i18next';
+import { Send } from '@mui/icons-material';
 import { useMutation } from "@apollo/client";
-import { Add, RestartAlt } from '@mui/icons-material';
 import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
@@ -38,10 +39,12 @@ export const CreateVote = (param: {
           }}
         >
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            sx={{ marginRight:1}}
+            labelId="selectVote"
+            id="selectVote"
             value={vote}
             label="Vote"
+            size='small'
             onChange={handleChange}
           >
             {param.session.voting.map((voting: any) => (
@@ -52,8 +55,8 @@ export const CreateVote = (param: {
             type="submit"
             variant="contained"
             size="small"
-            startIcon={<Add />}
-          >Vote</Button>
+            startIcon={<Send />}
+          ><Trans>createVote.vote</Trans></Button>
         </form>
       </div>
     );

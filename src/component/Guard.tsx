@@ -1,6 +1,7 @@
-import React = require('react');
+import * as React from 'react';
 import { useLocation, Navigate } from "react-router-dom";
-import { ContextStore, contextStore } from './ContextStore';
+
+import { ContextStore, contextStore } from '@component/ContextStore';
 
 export function Guard({ children }: { children: JSX.Element }) {
   let location = useLocation();
