@@ -3,10 +3,10 @@
   font-size: 10px;
   color: #555;
   text-align: center;
-  margin-top: 20px;
-  padding: 10px;
-  position: absolute;
-  bottom: 5px;
+  padding: 5px;
+  overflow:hidden;
+  position: fixed;
+  bottom: 0px;
   left: 50%;                   /* center link horizontally */
   transform: translateX(-50%); /* center link horizontally */
   div {

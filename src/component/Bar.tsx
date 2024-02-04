@@ -34,8 +34,8 @@ function Bar() {
 
   const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
-    switch(event.currentTarget.innerText) { 
-      case 'SESSIONS': {
+    switch(event.currentTarget.innerText.toLowerCase()) { 
+      case 'sessions': {
         navigate("/admin");
         break; 
       }
@@ -44,8 +44,8 @@ function Bar() {
 
   const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(null);
-    switch(event.currentTarget.innerText) { 
-      case 'Logout': {
+    switch(event.currentTarget.innerText.toLowerCase()) { 
+      case 'logout': {
         contextStore.setState({ login: null });
         break; 
       }

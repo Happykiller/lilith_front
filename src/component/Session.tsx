@@ -92,12 +92,6 @@ export const Session = () => {
       </div>
     );
   } else {
-    return (
-      <div>
-        <p>
-          Merci de choisir une session
-        </p>
-      </div>
-    );
+    return <Trans>session.choose</Trans>
   }
 }

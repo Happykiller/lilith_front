@@ -30,12 +30,17 @@
     "reset": "Effacer",
     "suspence": "Suspence"
   },
+  "joinSession": {
+    "login": "Merci de vous identifier",
+    "join": "Rejoindre"
+  },
   "home": {
     "title": "Le Poker Planning Lilith",
     "enter": "Entrer"
   },
   "session": {
-    "items": "Les items : "
+    "items": "Les items : ",
+    "choose": "Merci de choisir une session"
   },
   "play": {
     "title": "La session"

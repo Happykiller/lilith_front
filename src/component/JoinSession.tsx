@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { Trans } from 'react-i18next';
 import { Button } from '@mui/material';
+import InputIcon from '@mui/icons-material/Input';
 import { useMutation } from "@apollo/client";
 
 import { GQL } from '@src/common/gql';
-import { Add } from '@mui/icons-material';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 
 export const JoinSession = (param: {
@@ -16,11 +17,7 @@ export const JoinSession = (param: {
   if (error) return <p>`Error! ${error.message}`</p>;
 
   if (!context.login) {
-    return (
-      <div>
-        Merci de vous identifier
-      </div>
-    )
+    return <Trans>joinSession.log</Trans>
   } else {
     if (!param.session.members.includes(context.login)) {
       return (
@@ -38,8 +35,8 @@ export const JoinSession = (param: {
               type="submit"
               variant="contained"
               size="small"
-              startIcon={<Add />}
-            >Join</Button>
+              startIcon={<InputIcon />}
+            ><Trans>joinSession.join</Trans></Button>
           </form>
         </div>
       );

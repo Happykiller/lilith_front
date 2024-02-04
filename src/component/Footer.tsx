@@ -24,7 +24,7 @@ export const Footer = () => {
 
   return (
     <div className='footer'>
-      <h3>Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - <Trans>version.front</Trans>{version} - <Trans>version.back</Trans>{backVersion} - <a href="https://github.com/Happykiller">Github</a></h3>
+      Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - <Trans>version.front</Trans>{version} - <Trans>version.back</Trans>{backVersion} - <a href="https://github.com/Happykiller">Github</a>
     </div>
   )
 }
