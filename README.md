@@ -63,6 +63,9 @@ npm run start
 
 * `docker build -t lilith_front -f Dockerfile .`
 * `docker save lilith_front | gzip > lilith_front.tar.gz`
+* `docker stop lilith_front`
+* `docker rm lilith_front`
+* `docker image rm lilith_front`
 * `docker load < lilith_front.tar.gz`
 * `docker run -d --restart=always -p 8080:80 --name lilith_front lilith_front`
 
