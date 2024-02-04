@@ -59,6 +59,13 @@ APP_API_TOKEN="token"
 npm run start
 ```
 
+## MEP
+
+* `docker build -t lilith_front -f Dockerfile .`
+* `docker save lilith_front | gzip > lilith_front.tar.gz`
+* `docker load < lilith_front.tar.gz`
+* `docker run -d --restart=always -p 8080:80 --name lilith_front lilith_front`
+
 ## Usage
 
 Open your browser and navigate to http://localhost:8080 (or the specified port in your .env file).
