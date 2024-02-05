@@ -23,10 +23,10 @@ export const Item = (param: {
       let formVote;
       if (
         currentItem
-        && context.login
+        && context.code
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(context.login)
-        && !currentItem.votes.find((elt:any) => elt.member === context.login)
+        && param.session.members.includes(context.code)
+        && !currentItem.votes.find((elt:any) => elt.member === context.code)
       ) {
         formVote = <CreateVote
         session={param.session}
@@ -39,8 +39,8 @@ export const Item = (param: {
       if (
         currentItem
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(context.login)
-        && context.login === currentItem.author
+        && param.session.members.includes(context.code)
+        && context.code === currentItem.author
       ) {
         revealBt = <form
         onSubmit={e => { 
@@ -81,7 +81,7 @@ export const Item = (param: {
                 } else {
                   return
                 }
-              } else if (vote.member === context.login) {
+              } else if (vote.member === context.code) {
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={member}>

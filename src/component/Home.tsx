@@ -12,7 +12,7 @@ import { ContextStore, contextStore } from '@component/ContextStore';
 export const Home = () => {
   const context:ContextStore = contextStore();
 
-  const entry = (context.login)?<div className='entry'>
+  const entry = (context.code)?<div className='entry'>
   <Button component={Link} to={'/admin'}
     type="submit"
     variant="contained"

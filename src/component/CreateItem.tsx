@@ -22,7 +22,7 @@ export const CreateItem = () => {
           createItemSmt({ variables: { 
             name: itemLabel, 
             sessionId: context.sessionId,
-            author: context.login
+            author: context.code
           } });
           setItemLabel('');
         }}
@@ -44,7 +44,7 @@ export const CreateItem = () => {
             variant="contained"
             size="small"
             startIcon={<Add />}
-            disabled={!(itemLabel && itemLabel.length > 3) || context.login === null}
+            disabled={!(itemLabel && itemLabel.length > 3) || context.code === null}
           ><Trans>common.create</Trans></Button>
         </Box>
       </form>

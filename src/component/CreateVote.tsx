@@ -22,7 +22,7 @@ export const CreateVote = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (context.login && param.session.members.find((elt:any) => elt.name === name)) {
+  if (context.code && param.session.members.find((elt:any) => elt.name === context.code)) {
     return <p></p>
   } else {
     return (
@@ -32,7 +32,7 @@ export const CreateVote = (param: {
             e.preventDefault();
             CreateVoteSmt({ variables: { 
               sessionId: context.sessionId,
-              member: context.login,
+              member: context.code,
               vote: vote,
               itemId: context.itemId
             } });

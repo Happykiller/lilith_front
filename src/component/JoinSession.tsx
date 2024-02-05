@@ -16,10 +16,10 @@ export const JoinSession = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (!context.login) {
+  if (!context.code) {
     return <Trans>joinSession.log</Trans>
   } else {
-    if (!param.session.members.includes(context.login)) {
+    if (!param.session.members.includes(context.code)) {
       return (
         <div>
           <form className="formJoinSession"
@@ -27,7 +27,7 @@ export const JoinSession = (param: {
               e.preventDefault();
               joinSessionSmt({ variables: { 
                 sessionId: context.sessionId,
-                username: context.login
+                username: context.code
               } });
             }}
           >

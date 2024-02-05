@@ -36,6 +36,21 @@ export class GQL {
     }
   `;
 
+  static QRY_AUTH = gql`
+    query auth($login: String!, $secret: String!) {
+      auth (
+        dto: {
+          login: $login
+          secret: $secret
+        }
+      ) {
+        id
+        code
+        accessToken
+      }
+    }
+  `;
+
   static MUT_REVEAL = gql`
     mutation reveal(
       $sessionId: String!,

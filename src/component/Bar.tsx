@@ -1,29 +1,32 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
+import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from "react-router-dom";
+import { Trans, useTranslation } from 'react-i18next';
 
 import '@component/bar.scss';
 import { ContextStore, contextStore } from '@component/ContextStore';
 
-const pages = ['Sessions'];
-const settings = ['Logout'];
+const pages = ['sessions'];
+const settings = ['logout'];
 
 function Bar() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const context:ContextStore = contextStore();
+  const reset = contextStore((state) => state.reset);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const context:ContextStore = contextStore();
-  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -35,7 +38,7 @@ function Bar() {
   const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
     switch(event.currentTarget.innerText.toLowerCase()) { 
-      case 'sessions': {
+      case t('bar.sessions').toLowerCase(): {
         navigate("/admin");
         break; 
       }
@@ -45,8 +48,8 @@ function Bar() {
   const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(null);
     switch(event.currentTarget.innerText.toLowerCase()) { 
-      case 'logout': {
-        contextStore.setState({ login: null });
+      case t('bar.logout').toLowerCase(): {
+        reset();
         break; 
       }
     } 
@@ -98,7 +101,7 @@ function Bar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center"><Trans>bar.{page}</Trans></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -121,7 +124,7 @@ function Bar() {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                <Trans>bar.{page}</Trans>
               </Button>
             ))}
           </Box>
@@ -129,7 +132,7 @@ function Bar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={context.login}>{context.login}</Avatar>
+                <Avatar alt={context.code}>{context.code}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -150,7 +153,7 @@ function Bar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center"><Trans>bar.{setting}</Trans></Typography>
                 </MenuItem>
               ))}
             </Menu>

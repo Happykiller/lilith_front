@@ -2,6 +2,10 @@
   "admin": {
     "title": "Les sessions"
   },
+  "bar": {
+    "sessions": "Sessions",
+    "logout": "Quitter"
+  },
   "createItem": {
     "label": "Entrer le nom d'item"
   },
@@ -11,13 +15,21 @@
   "common": {
     "done": "Valider",
     "cancel": "Annuler",
-    "create": "Créer"
+    "create": "Créer",
+    "loading": "Chargement..."
+  },
+  "error": {
+    "credentials_wrong": "Identification impossible"
   },
   "formLogin": {
     "login": {
       "label": "Entrer votre nom"
     },
-    "name": "Nom : "
+    "secret": {
+      "label": "Entrer votre clé secrète"
+    },
+    "name": "Nom : ",
+    "error": "Erreur : "
   },
   "formSession": {
     "session": {

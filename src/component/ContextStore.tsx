@@ -2,16 +2,26 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface ContextStore {
-  login: string;
-  sessionId: number;
-  itemId: number;
+  id: string
+  code: string
+  accessToken: string
+  sessionId: number
+  itemId: number,
+  reset: () => void
+}
+
+const initialState:any = {
+  id: null,
+  code: null,
+  accessToken: null,
+  sessionId: null,
+  itemId: null
 }
 
 const contextPersist = persist<ContextStore>(
   (set) => ({
-    login: null,
-    sessionId: null,
-    itemId: null
+    ...initialState,
+    reset: () => set(initialState)
   }),
   {
       name: "lilith-storage",

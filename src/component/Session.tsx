@@ -42,8 +42,8 @@ export const Session = () => {
 
     let formCreateItem;
     if (
-      context.login
-      && data.session.members.includes(context.login)
+      context.code
+      && data.session.members.includes(context.code)
     ) {
       formCreateItem = <CreateItem />
     } else {
