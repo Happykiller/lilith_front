@@ -47,7 +47,7 @@ const wsLink = new GraphQLWsLink(createClient({
   lazy: true,
   connectionParams: async () => {
     return {
-      Authorization: `Bearer ${process.env.APP_API_TOKEN}`
+      Authorization: `Bearer ${getToken()}`
     };
 },
 }));
@@ -60,7 +60,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: `Bearer ${process.env.APP_API_TOKEN}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   };
 });
