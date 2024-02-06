@@ -33,6 +33,14 @@ const router = createBrowserRouter([
   }
 ]);
 
+const getToken = () => {
+  let token = process.env.APP_API_TOKEN;
+  try {
+    const lilithStorage = JSON.parse(sessionStorage.getItem("lilith-storage"));
+    token = lilithStorage.state.accessToken;
+  } catch (e) {}
+  return token;
+}
 
 const wsLink = new GraphQLWsLink(createClient({
   url: process.env.APP_WS_URL,
@@ -52,7 +60,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: `Bearer token`,
+      Authorization: `Bearer ${process.env.APP_API_TOKEN}`,
     },
   };
 });

@@ -17,7 +17,6 @@ export const FormLogin = () => {
   const [executeQuery, {loading, data, error}] = useLazyQuery(GQL.QRY_AUTH, {
     errorPolicy: "all",
     onCompleted: (data) => {
-      console.log(data)
       contextStore.setState({ 
         code: data.auth.code,
         id: data.auth.id,
