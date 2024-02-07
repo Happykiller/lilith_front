@@ -8,7 +8,7 @@ import { GQL } from '@src/common/gql';
 
 export const FormSession = () => {
   let enumList: any = [
-    ['XSS', 'XS', 'M', 'L', 'XL', 'XXL', '?', 'coffee'],
+    ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?', 'coffee'],
     ['1', '3', '5', '8', '13', '21', '24', '34', '55', '89', '?', 'coffee'],
     ['0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'coffee'],
     ['1', '2', '4', '8', '16', '32', '64', '?', 'coffee']

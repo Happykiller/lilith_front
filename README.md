@@ -62,11 +62,11 @@ npm run start
 ## MEP
 
 * `docker build -t lilith_front -f Dockerfile .`
-* `docker save lilith_front | gzip > lilith_front.tar.gz`
+* `docker save lilith_front -o lilith_front.tar`
 * `docker stop lilith_front`
 * `docker rm lilith_front`
 * `docker image rm lilith_front`
-* `docker load < lilith_front.tar.gz`
+* `docker load -i lilith_front.tar`
 * `docker run -d --restart=always -p 8080:80 --name lilith_front lilith_front`
 
 ## Usage
