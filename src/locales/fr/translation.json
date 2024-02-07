@@ -21,6 +21,10 @@
   "error": {
     "credentials_wrong": "Identification impossible"
   },
+  "footer": {
+    "issues": "Anomalies",
+    "roadmap": "Roadmap"
+  },
   "formLogin": {
     "login": {
       "label": "Entrer votre nom"
