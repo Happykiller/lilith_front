@@ -12,7 +12,9 @@ export const CreateVote = (param: {
 }) => {
   const context:ContextStore = contextStore();
   const [CreateVoteSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_VOTE);
-  const [vote, setVote] = React.useState('L');
+
+  const indexMiddle = Math.round((param.session.voting.length - 2) / 2);
+  const [vote, setVote] = React.useState(param.session.voting[indexMiddle]);
 
   const handleChange = (event: SelectChangeEvent) => {
     const voteChoosen = event.target.value;

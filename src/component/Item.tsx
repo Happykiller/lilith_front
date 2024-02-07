@@ -75,7 +75,7 @@ export const Item = (param: {
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={member}>
-                      {member} =&gt; ?
+                      {member} = &gt; ?
                     </ListItem>
                   )
                 } else {
@@ -85,7 +85,7 @@ export const Item = (param: {
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={member}>
-                      {vote.member} =&gt; {vote.vote} <form
+                      {vote.member} = &gt; {vote.vote} <form
                         onSubmit={e => { 
                           e.preventDefault();
                           resetSmt({ 
@@ -110,20 +110,20 @@ export const Item = (param: {
                 } else {
                   return (
                     <ListItem disablePadding key={member}>
-                      {vote.member} =&gt; {vote.vote}
+                      {vote.member} = &gt; {vote.vote}
                     </ListItem>
                   )
                 }
               } else if (currentItem.state === 'REVEAL') {
                 return (
                   <ListItem disablePadding key={member}>
-                    {vote.member} =&gt; {vote.vote}
+                    {vote.member} = &gt; {vote.vote}
                   </ListItem>
                 )
               } else {
                 return (
                   <ListItem disablePadding key={member}>
-                    {vote.member} =&gt; <Trans>item.suspence</Trans>
+                    {vote.member} = &gt; <Trans>item.suspence</Trans>
                   </ListItem>
                 )  
               }

@@ -108,10 +108,11 @@ export class GQL {
   `;
 
   static MUT_CREATE_SESSION = gql`
-    mutation createSession($name: String!) {  
+    mutation createSession($name: String!, $voting: [String!]) {  
       createSession (
         dto: {
           name: $name
+          voting: $voting
         }
       ) {
         id
