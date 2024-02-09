@@ -21,7 +21,7 @@ export const CreateItem = () => {
           e.preventDefault();
           createItemSmt({ variables: { 
             name: itemLabel, 
-            sessionId: context.sessionId,
+            game_id: context.game_id,
             author: context.code
           } });
           setItemLabel('');

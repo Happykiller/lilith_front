@@ -1,10 +1,10 @@
 # Lilith Planning Poker Front
 
-Back Planning Poker is a project that leverages TypeScript, NestJS, and GraphQL subscriptions to facilitate efficient back-end planning sessions using the popular Planning Poker technique. This project aims to streamline the estimation process for development tasks, ensuring better accuracy and collaboration among team members.
+Back Planning Poker is a project that leverages TypeScript, NestJS, and GraphQL subscriptions to facilitate efficient back-end planning games using the popular Planning Poker technique. This project aims to streamline the estimation process for development tasks, ensuring better accuracy and collaboration among team members.
 
 ## Features
 
-- **Real-time Collaboration**: Utilize GraphQL subscriptions to enable real-time collaboration during planning sessions, allowing team members to instantly see and discuss estimations.
+- **Real-time Collaboration**: Utilize GraphQL subscriptions to enable real-time collaboration during planning games, allowing team members to instantly see and discuss estimations.
 
 - **Scalable Architecture**: Built on NestJS, a powerful and extensible Node.js framework, the project provides a scalable and modular architecture for easy maintenance and future enhancements.
 
@@ -73,7 +73,7 @@ npm run start
 
 Open your browser and navigate to http://localhost:8080 (or the specified port in your .env file).
 
-Start a new planning session, and team members can join by accessing the provided URL.
+Start a new planning game, and team members can join by accessing the provided URL.
 
 Use the Planning Poker interface to estimate each task, and the real-time updates via GraphQL subscriptions will keep everyone in sync.
 

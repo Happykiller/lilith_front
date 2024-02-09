@@ -1,9 +1,9 @@
 {
   "admin": {
-    "title": "Les sessions"
+    "title": "Les games"
   },
   "bar": {
-    "sessions": "Sessions",
+    "games": "Games",
     "logout": "Quitter"
   },
   "createItem": {
@@ -35,9 +35,9 @@
     "name": "Nom : ",
     "error": "Erreur : "
   },
-  "formSession": {
-    "session": {
-      "label": "Entrer le nom de session"
+  "formGame": {
+    "game": {
+      "label": "Entrer le nom de game"
     }
   },
   "item": {
@@ -46,7 +46,7 @@
     "reset": "Effacer",
     "suspence": "Suspence"
   },
-  "joinSession": {
+  "joinGame": {
     "login": "Merci de vous identifier",
     "join": "Rejoindre"
   },
@@ -54,12 +54,12 @@
     "title": "Le Poker Planning Lilith",
     "enter": "Entrer"
   },
-  "session": {
+  "game": {
     "items": "Les items : ",
-    "choose": "Merci de choisir une session"
+    "choose": "Merci de choisir une game"
   },
   "play": {
-    "title": "La session"
+    "title": "La game"
   },
   "version": {
     "front": "Web: ",

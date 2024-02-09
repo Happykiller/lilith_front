@@ -96,7 +96,7 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        sessions: {
+        games: {
           merge(existing, incoming) {
             return incoming;
           }
@@ -105,14 +105,14 @@ const cache = new InMemoryCache({
     },
     Subscription: {
       fields: {
-        subToSessions: {
+        subToGames: {
           merge(existing, incoming) {
             return incoming;
           }
         }
       },
     },
-    SessionItemRecordObjectResolver: {
+    GameItemRecordObjectResolver: {
       fields: {
         votes: {
           merge(existing, incoming) {

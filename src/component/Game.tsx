@@ -6,26 +6,26 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { GQL } from '@src/common/gql';
 import { Item } from '@component/Item';
 import { CreateItem } from '@component/CreateItem';
-import { JoinSession } from '@component/JoinSession';
+import { JoinGame } from '@src/component/JoinGame';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 import { Trans } from 'react-i18next';
 
-export const Session = () => {
+export const Game = () => {
   const context:ContextStore = contextStore();
 
-  if (context.sessionId) {
+  if (context.game_id) {
 
-    const respQry:{ loading:any, error?:any, data:any } = useQuery(GQL.QRY_SESSION, {
+    const respQry:{ loading:any, error?:any, data:any } = useQuery(GQL.QRY_GAME, {
       variables: {
-        sessionId: context.sessionId
+        game_id: context.game_id
       },
     });
 
     const respSub:{loading:any, error?:any, data?:any } = useSubscription(
-      GQL.SUB_SESSION,
+      GQL.SUB_GAME,
       { 
         variables: {
-          sessionId: context.sessionId
+          game_id: context.game_id
         },
         skip: respQry.loading || respQry.error
       }
@@ -37,13 +37,16 @@ export const Session = () => {
     if (!respQry.data && !respSub.data) return <p>Nothing</p>;
 
     const data = {
-      session: respQry.data?.session || respSub.data?.subToSession
+      game: respQry.data?.game || respSub.data?.subToGame
     }
+
+    console.log('context.id', context.id)
+    console.log('data.game.members', data.game.members)
 
     let formCreateItem;
     if (
-      context.code
-      && data.session.members.includes(context.code)
+      context.id
+      && data.game.members.includes(context.id)
     ) {
       formCreateItem = <CreateItem />
     } else {
@@ -51,26 +54,26 @@ export const Session = () => {
     }
 
     let item = <p/>;
-    if (data.session && context.itemId ){
+    if (data.game && context.item_id ){
       item = <Item
-        session={data.session}
+        game={data.game}
       />
     }
 
     return (
       <div>
         <div className='title'>
-          {data.session.name}
+          {data.game.name}
         </div>
-        <JoinSession 
-          session={data.session} 
+        <JoinGame 
+          game={data.game} 
         />
         {formCreateItem}
         <p>
-          <u><Trans>session.items</Trans></u>
+          <u><Trans>game.items</Trans></u>
         </p>
         <List>
-          {data.session.items.map((item: any) => (
+          {data.game.items.map((item: any) => (
             <ListItem disablePadding key={item.id}>
               <div style={{
                 margin: "5px 0"
@@ -79,9 +82,9 @@ export const Session = () => {
                   variant="contained"
                   size="small"
                   startIcon={<InputIcon />}
-                  disabled={(context.itemId === item.id)}
+                  disabled={(context.item_id === item.id)}
                   onClick={(e) => {
-                    contextStore.setState({ itemId: item.id });
+                    contextStore.setState({ item_id: item.id });
                   }}
                 >{item.name}</Button>
               </div>
@@ -92,6 +95,6 @@ export const Session = () => {
       </div>
     );
   } else {
-    return <Trans>session.choose</Trans>
+    return <Trans>game.choose</Trans>
   }
 }

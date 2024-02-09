@@ -3,7 +3,7 @@ import { Trans } from 'react-i18next';
 
 import '@component/play.scss';
 import { Footer } from '@component/Footer';
-import { Session } from '@component/Session';
+import { Game } from '@component/Game';
 import ResponsiveAppBar from './Bar';
 
 export const Play = () => {
@@ -11,8 +11,8 @@ export const Play = () => {
     <div>
       <ResponsiveAppBar/>
       <div className='containerPlay'>
-        <div className='session'>
-          <Session/>
+        <div className='game'>
+          <Game/>
         </div>
         <Footer />
       </div>

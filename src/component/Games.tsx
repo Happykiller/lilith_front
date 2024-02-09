@@ -7,17 +7,17 @@ import { Button, List, ListItem } from '@mui/material';
 import { GQL } from '@src/common/gql';
 import { contextStore } from '@src/component/ContextStore';
 
-export const Sessions = () => {
-  const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_SESSIONS);
+export const Games = () => {
+  const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_GAMES);
   const navigate = useNavigate();
 
   subscribeToMore({
-    document: GQL.SUB_SESSIONS,
+    document: GQL.SUB_GAMES,
     updateQuery: (prev:any, { subscriptionData }:any) => {
       if (!subscriptionData.data) return prev;
-      const sessions = subscriptionData.data.subToSessions;
+      const games = subscriptionData.data.subToGames;
       return {
-        sessions: sessions,
+        games: games,
       };
     },
   });
@@ -29,8 +29,8 @@ export const Sessions = () => {
   return (
     <div>
       <List>
-        {data.sessions.map((session: any) => (
-          <ListItem disablePadding key={session.id}>
+        {data.games.map((game: any) => (
+          <ListItem disablePadding key={game.id}>
             <div style={{
               margin: "5px 0"
             }}>
@@ -39,10 +39,10 @@ export const Sessions = () => {
                 size="small"
                 startIcon={<InputIcon />}
                 onClick={(e) => {
-                  contextStore.setState({ sessionId: session.id, itemId: null });
+                  contextStore.setState({ game_id: game.id, item_id: null });
                   navigate("/play");
                 }}
-              >{session.name}</Button>
+              >{game.name}</Button>
             </div>
           </ListItem>
         ))}

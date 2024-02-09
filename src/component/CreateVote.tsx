@@ -8,13 +8,13 @@ import { GQL } from '@src/common/gql';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 
 export const CreateVote = (param: {
-  session: any
+  game: any
 }) => {
   const context:ContextStore = contextStore();
   const [CreateVoteSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_VOTE);
 
-  const indexMiddle = Math.round((param.session.voting.length - 2) / 2);
-  const [vote, setVote] = React.useState(param.session.voting[indexMiddle]);
+  const indexMiddle = Math.round((param.game.voting.length - 2) / 2);
+  const [vote, setVote] = React.useState(param.game.voting[indexMiddle]);
 
   const handleChange = (event: SelectChangeEvent) => {
     const voteChoosen = event.target.value;
@@ -24,7 +24,7 @@ export const CreateVote = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (context.code && param.session.members.find((elt:any) => elt.name === context.code)) {
+  if (context.code && param.game.members.find((elt:any) => elt.name === context.code)) {
     return <p></p>
   } else {
     return (
@@ -33,10 +33,10 @@ export const CreateVote = (param: {
           onSubmit={e => {
             e.preventDefault();
             CreateVoteSmt({ variables: { 
-              sessionId: context.sessionId,
+              game_id: context.game_id,
               member: context.code,
               vote: vote,
-              itemId: context.itemId
+              item_id: context.item_id
             } });
           }}
         >
@@ -49,7 +49,7 @@ export const CreateVote = (param: {
             size='small'
             onChange={handleChange}
           >
-            {param.session.voting.map((voting: any) => (
+            {param.game.voting.map((voting: any) => (
               <MenuItem value={voting} key={voting}>{voting}</MenuItem>
             ))}
           </Select>

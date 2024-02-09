@@ -9,12 +9,12 @@ import { CreateVote } from '@component/CreateVote';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 
 export const Item = (param: {
-  session: any
+  game: any
 }) => {
   const context:ContextStore = contextStore();
-  if (context.itemId) {
+  if (context.item_id) {
     const { t } = useTranslation();
-    const currentItem = param.session.items.find((item:any) => item.id === context.itemId);
+    const currentItem = param.game.items.find((item:any) => item.id === context.item_id);
 
     if (currentItem) {
       const [revealSmt, { data, loading, error }] = useMutation(GQL.MUT_REVEAL);
@@ -25,11 +25,11 @@ export const Item = (param: {
         currentItem
         && context.code
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(context.code)
+        && param.game.members.includes(context.code)
         && !currentItem.votes.find((elt:any) => elt.member === context.code)
       ) {
         formVote = <CreateVote
-        session={param.session}
+        game={param.game}
         />
       } else {
         formVote = <p></p>
@@ -39,15 +39,15 @@ export const Item = (param: {
       if (
         currentItem
         && currentItem.state !== 'REVEAL'
-        && param.session.members.includes(context.code)
+        && param.game.members.includes(context.code)
         && context.code === currentItem.author
       ) {
         revealBt = <form
         onSubmit={e => { 
           e.preventDefault();
           revealSmt({ variables: { 
-            sessionId: context.sessionId,
-            itemId: context.itemId
+            game_id: context.game_id,
+            item_id: context.item_id
           } });
         }}
       >
@@ -69,7 +69,7 @@ export const Item = (param: {
         {revealBt}
         <List>
           {
-            param.session.members.map((member: any) => {
+            param.game.members.map((member: any) => {
               const vote = currentItem.votes.find((vote:any) => vote.member === member);
               if (!vote) {
                 if (currentItem.state !== 'REVEAL') {
@@ -90,9 +90,9 @@ export const Item = (param: {
                           e.preventDefault();
                           resetSmt({ 
                             variables: { 
-                              sessionId: context.sessionId,
-                              itemId: context.itemId,
-                              voteId: vote.id
+                              game_id: context.game_id,
+                              item_id: context.item_id,
+                              vote_id: vote.id
                             } 
                           });
                         }}

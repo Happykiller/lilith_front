@@ -17,7 +17,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import '@component/bar.scss';
 import { ContextStore, contextStore } from '@component/ContextStore';
 
-const pages = ['sessions'];
+const pages = ['games'];
 const settings = ['logout'];
 
 function Bar() {
@@ -38,7 +38,7 @@ function Bar() {
   const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(null);
     switch(event.currentTarget.innerText.toLowerCase()) { 
-      case t('bar.sessions').toLowerCase(): {
+      case t('bar.games').toLowerCase(): {
         navigate("/admin");
         break; 
       }

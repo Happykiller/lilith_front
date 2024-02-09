@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 
-export const DebugSession = () => {
+export const DebugGame = () => {
   const store:ContextStore = contextStore();
   if (process.env.APP_DEBUG) {
     return (

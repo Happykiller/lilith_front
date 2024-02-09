@@ -7,28 +7,29 @@ import { useMutation } from "@apollo/client";
 import { GQL } from '@src/common/gql';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
 
-export const JoinSession = (param: {
-  session: any
+export const JoinGame = (param: {
+  game: any
 }) => {
   const context:ContextStore = contextStore();
-  const [joinSessionSmt, { data, loading, error }] = useMutation(GQL.MUT_JOIN_SESSION);
+  const [joinGameSmt, { data, loading, error }] = useMutation(GQL.MUT_JOIN_GAME);
 
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
   if (!context.code) {
-    return <Trans>joinSession.log</Trans>
+    return <Trans>joinGame.log</Trans>
   } else {
-    if (!param.session.members.includes(context.code)) {
+    if (!param.game.members.includes(context.code)) {
       return (
         <div>
-          <form className="formJoinSession"
+          <form className="formJoinGame"
             onSubmit={e => {
               e.preventDefault();
-              joinSessionSmt({ variables: { 
-                sessionId: context.sessionId,
-                username: context.code
-              } });
+              joinGameSmt({ 
+                variables: { 
+                  game_id: context.game_id
+                } 
+              });
             }}
           >
             <Button 
@@ -36,7 +37,7 @@ export const JoinSession = (param: {
               variant="contained"
               size="small"
               startIcon={<InputIcon />}
-            ><Trans>joinSession.join</Trans></Button>
+            ><Trans>joinGame.join</Trans></Button>
           </form>
         </div>
       );

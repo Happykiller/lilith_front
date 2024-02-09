@@ -1,20 +1,20 @@
 import { gql } from '@apollo/client';
 
 export class GQL {
-  static QRY_SESSIONS = gql`
+  static QRY_GAMES = gql`
     query {
-      sessions {
+      games {
         id
         name
       }
     }
   `;
 
-  static QRY_SESSION = gql`
-    query session($sessionId: String!) {
-      session(
+  static QRY_GAME = gql`
+    query game($game_id: String!) {
+      game(
         dto: {
-          sessionId: $sessionId
+          game_id: $game_id
         }
       ) {
         id
@@ -24,11 +24,11 @@ export class GQL {
         items {
           id
           name
-          author
+          author_id
           state
           votes {
             id
-            member
+            author_id
             vote
           }
         }
@@ -53,13 +53,13 @@ export class GQL {
 
   static MUT_REVEAL = gql`
     mutation reveal(
-      $sessionId: String!,
-      $itemId: String!
+      $game_id: String!
+      $item_id: String!
     ) {
       reveal(
         dto: {
-          sessionId: $sessionId
-          itemId: $itemId
+          game_id: $game_id
+          item_id: $item_id
         }
       )
     }
@@ -67,25 +67,25 @@ export class GQL {
 
   static MUT_RESET = gql`
     mutation removeVote(
-      $sessionId: String!,
-      $itemId: String!,
-      $voteId: String!
+      $game_id: String!
+      $item_id: String!
+      $vote_id: String!
     ) {
       removeVote(
         dto: {
-          sessionId: $sessionId
-          itemId: $itemId
-          voteId: $voteId
+          game_id: $game_id
+          item_id: $item_id
+          vote_id: $vote_id
         }
       )
     }
   `;
 
-  static SUB_SESSION = gql`
-    subscription onChange($sessionId: String!) {
-      subToSession (
+  static SUB_GAME = gql`
+    subscription onChange($game_id: String!) {
+      subToGame (
         dto: {
-          sessionId: $sessionId
+          game_id: $game_id
         }
       ) {
         id
@@ -95,11 +95,11 @@ export class GQL {
         items {
           id
           name
-          author
+          author_id
           state
           votes {
             id
-            member
+            author_id
             vote
           }
         }
@@ -107,9 +107,9 @@ export class GQL {
     }
   `;
 
-  static MUT_CREATE_SESSION = gql`
-    mutation createSession($name: String!, $voting: [String!]) {  
-      createSession (
+  static MUT_CREATE_GAME = gql`
+    mutation createGame($name: String!, $voting: [String!]) {  
+      createGame (
         dto: {
           name: $name
           voting: $voting
@@ -124,21 +124,20 @@ export class GQL {
 
   static MUT_CREATE_VOTE = gql`
     mutation createVote (
-      $member: String!,
-      $sessionId: String!,
-      $itemId: String!,
+      $game_id: String!
+      $item_id: String!
       $vote: String!
     ) {  
       createVote (
         dto: {
-          sessionId: $sessionId
-          itemId: $itemId
+          game_id: $game_id
+          item_id: $item_id
           member: $member
           vote: $vote
         }
       ) {
         id
-        member
+        author_id
         vote
       }
     }
@@ -146,44 +145,41 @@ export class GQL {
 
   static MUT_CREATE_ITEM = gql`
     mutation createItem(
-      $sessionId: String!,
-      $name: String!,
-      $author: String!
+      $game_id: String!
+      $name: String!
     ) {  
       createItem (
         dto: {
-          sessionId: $sessionId
+          game_id: $game_id
           name: $name
-          author: $author
         }
       ) {
         id
         name
-        author
+        author_id
         state
         votes {
           id
-          member
+          author_id
           vote
         }
       }
     }
   `;
 
-  static MUT_JOIN_SESSION = gql`
-    mutation joinSession($sessionId: String!, $username: String!) {  
-      joinSession (
+  static MUT_JOIN_GAME = gql`
+    mutation joinGame($game_id: String!) {  
+      joinGame (
         dto: {
-          sessionId: $sessionId
-          username: $username
+          game_id: $game_id
         }
       )
     }
   `;
 
-  static SUB_SESSIONS = gql`
-  subscription onNewSession {
-    subToSessions {
+  static SUB_GAMES = gql`
+  subscription onNewGame {
+    subToGames {
       id
       name
     }

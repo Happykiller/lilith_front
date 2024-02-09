@@ -6,7 +6,7 @@ import { Box, Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mu
 
 import { GQL } from '@src/common/gql';
 
-export const FormSession = () => {
+export const FormGame = () => {
   let enumList: any = [
     ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?', 'coffee'],
     ['1', '3', '5', '8', '13', '21', '24', '34', '55', '89', '?', 'coffee'],
@@ -15,7 +15,7 @@ export const FormSession = () => {
   ];
   const [name, setName] = React.useState('');
   const [voting, setVoting] = React.useState('0');
-  const [createSessionSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_SESSION);
+  const [createGameSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_GAME);
 
   if (error) return <p>`Error! ${error.message}`</p>;
 
@@ -25,10 +25,10 @@ export const FormSession = () => {
 
   return (
     <div>
-      <form className="formCreateSession"
+      <form className="formCreateGame"
         onSubmit={e => {
           e.preventDefault();
-          createSessionSmt({ 
+          createGameSmt({ 
             variables: { 
               name: name,
               voting: enumList[parseInt(voting)]
@@ -47,7 +47,7 @@ export const FormSession = () => {
         >
           <TextField
             sx={{ marginRight:1}}
-            label={<Trans>formSession.session.label</Trans>}
+            label={<Trans>formGame.game.label</Trans>}
             variant="standard"
             size="small"
             value={name}
