@@ -20,6 +20,11 @@ export const Item = (param: {
     const currentItem = param.game.items.find((item:any) => item.id === context.item_id);
 
     if (currentItem) {
+
+      /**
+       * Voting possible
+       * If not reveal and not vote already
+       */
       let formVote;
       if (
         context.id
@@ -34,6 +39,10 @@ export const Item = (param: {
         formVote = <p></p>
       }
 
+      /**
+       * Reveal possible
+       * If not reveal and author of the item
+       */
       let revealBt;
       if (
         currentItem.state !== 'REVEAL'
@@ -67,23 +76,32 @@ export const Item = (param: {
         {revealBt}
         <List>
           {
+            /**
+             * View all member of game
+             */
             param.game.members.map((user_id: any) => {
               const vote = currentItem.votes.find((vote:any) => vote.author_id === user_id);
               if (!vote) {
+                /**
+                 * If the user no vote yet and item not reveal show him 
+                 */
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={user_id}>
-                      {user_id} = &gt; ?
+                      {context.code} = &gt; ?
                     </ListItem>
                   )
                 } else {
                   return
                 }
               } else if (vote.author_id === context.id) {
+                /**
+                 * If the user has vote and item not reveal show his vote active
+                 */
                 if (currentItem.state !== 'REVEAL') {
                   return (
                     <ListItem disablePadding key={user_id}>
-                      {vote.author_id} = &gt; {vote.vote} <form
+                      {vote.user.code} = &gt; {vote.vote} <form
                         onSubmit={e => { 
                           e.preventDefault();
                           resetSmt({ 
@@ -105,23 +123,32 @@ export const Item = (param: {
                       </form>
                     </ListItem>
                   )
+                /**
+                 * If the user has vote and item reveal show his vote inactive
+                 */
                 } else {
                   return (
-                    <ListItem disablePadding key={user_id}>
-                      {vote.author_id} = &gt; {vote.vote}
+                    <ListItem disablePadding key={vote.user.id}>
+                      {vote.user.code} = &gt; {vote.vote}
                     </ListItem>
                   )
                 }
+              /**
+               * If not his vote and item is reveal
+               */
               } else if (currentItem.state === 'REVEAL') {
                 return (
-                  <ListItem disablePadding key={user_id}>
-                    {vote.author_id} = &gt; {vote.vote}
+                  <ListItem disablePadding key={vote.user.id}>
+                    {vote.user.code} = &gt; {vote.vote}
                   </ListItem>
                 )
+              /**
+               * If not his vote and item is not reveal
+               */
               } else {
                 return (
-                  <ListItem disablePadding key={user_id}>
-                    {vote.member} = &gt; <Trans>item.suspence</Trans>
+                  <ListItem disablePadding key={vote.user.id}>
+                    {vote.user.code} = &gt; <Trans>item.suspence</Trans>
                   </ListItem>
                 )  
               }

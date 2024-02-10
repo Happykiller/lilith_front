@@ -29,6 +29,10 @@ export class GQL {
           votes {
             id
             author_id
+            user {
+              id
+              code
+            }
             vote
           }
         }
