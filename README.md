@@ -61,6 +61,7 @@ npm run start
 
 ## MEP
 
+* Warning .env.local
 * `docker build -t lilith_front -f Dockerfile .`
 * `docker save lilith_front -o lilith_front.tar`
 * `docker stop lilith_front`
