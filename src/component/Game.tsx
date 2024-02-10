@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Trans } from 'react-i18next';
 import InputIcon from '@mui/icons-material/Input';
 import { Button, List, ListItem } from '@mui/material';
 import { useQuery, useSubscription } from "@apollo/client";
@@ -6,9 +7,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { GQL } from '@src/common/gql';
 import { Item } from '@component/Item';
 import { CreateItem } from '@component/CreateItem';
-import { JoinGame } from '@src/component/JoinGame';
 import { ContextStore, contextStore } from '@src/component/ContextStore';
-import { Trans } from 'react-i18next';
 
 export const Game = () => {
   const context:ContextStore = contextStore();
@@ -60,11 +59,9 @@ export const Game = () => {
     return (
       <div>
         <div className='title'>
-          {data.game.name}
+          <h1>{data.game.name}</h1>
+          <h2><Trans>game.author</Trans>{data.game.author.code}</h2>
         </div>
-        <JoinGame 
-          game={data.game} 
-        />
         {formCreateItem}
         <p>
           <u><Trans>game.items</Trans></u>

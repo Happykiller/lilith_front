@@ -5,8 +5,8 @@ export interface ContextStore {
   id: string
   code: string
   accessToken: string
-  game_id: number
-  item_id: number,
+  game_id: string
+  item_id: string,
   reset: () => void
 }
 

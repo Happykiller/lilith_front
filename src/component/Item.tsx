@@ -71,7 +71,7 @@ export const Item = (param: {
 
       return <div>
         <p>
-          <u><Trans>item.item</Trans></u>{currentItem.name}
+          <u><Trans>item.item</Trans></u>{currentItem.name} (<Trans>item.author</Trans>{currentItem.author.code})
         </p>
         {revealBt}
         <List>

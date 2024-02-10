@@ -1,6 +1,9 @@
 {
   "admin": {
-    "title": "Les parties"
+    "title": "Les parties",
+    "newGame": "Créer une nouvelle partie",
+    "joinGame": "Rejoindre une partie",
+    "yourGames": "Vos parties"
   },
   "bar": {
     "games": "Les parties",
@@ -16,7 +19,9 @@
     "done": "Valider",
     "cancel": "Annuler",
     "create": "Créer",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "error": "Erreur : ",
+    "nothing": "Contacter l'administrateur"
   },
   "error": {
     "credentials_wrong": "Identification impossible"
@@ -44,11 +49,15 @@
     "item": "Item en cours : ",
     "reveal": "Révéler à tous",
     "reset": "Effacer",
-    "suspence": "Suspence"
+    "suspence": "Suspence",
+    "author": "Auteur : "
   },
   "joinGame": {
     "login": "Merci de vous identifier",
-    "join": "Rejoindre"
+    "join": "Rejoindre",
+    "game": {
+      "id": "Clé de la partie"
+    }
   },
   "home": {
     "title": "Le Poker Planning Lilith",
@@ -56,7 +65,13 @@
   },
   "game": {
     "items": "Les items : ",
-    "choose": "Merci de choisir une game"
+    "choose": "Merci de choisir une game",
+    "author": "Auteur : "
+  },
+  "games": {
+    "copy": "Copier clée",
+    "join": "Rejoindre",
+    "copied": "Clé copiée"
   },
   "play": {
     "title": "La game"

@@ -2,14 +2,24 @@ import * as React from 'react';
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import InputIcon from '@mui/icons-material/Input';
-import { Button, List, ListItem } from '@mui/material';
+import { Trans, useTranslation } from 'react-i18next';
+import { Button, Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
 import { contextStore } from '@src/component/ContextStore';
+import { ContentCopy } from '@mui/icons-material';
+import { FlashStore, flashStore } from './Flash';
 
 export const Games = () => {
   const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_GAMES);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const flash:FlashStore = flashStore();
+
+  interface GameModel {
+    id: string
+    name: string
+  };
 
   subscribeToMore({
     document: GQL.SUB_GAMES,
@@ -22,31 +32,50 @@ export const Games = () => {
     },
   });
 
-  if (loading) return <p>"Loading...";</p>;
-  if (error) return <p>`Error! ${error.message}`</p>;
-  if (!data) return <p>Nothing</p>;
+  if (loading) return <Trans>common.loading</Trans>;
+  if (error) return <div><Trans>common.error</Trans><Trans>{error.message}</Trans></div>;
+  if (!data) return <Trans>common.nothing</Trans>
 
   return (
     <div>
-      <List>
-        {data.games.map((game: any) => (
-          <ListItem disablePadding key={game.id}>
-            <div style={{
-              margin: "5px 0"
-            }}>
-              <Button
-                variant="contained"
-                size="small"
-                startIcon={<InputIcon />}
-                onClick={(e) => {
-                  contextStore.setState({ game_id: game.id, item_id: null });
-                  navigate("/play");
-                }}
-              >{game.name}</Button>
-            </div>
-          </ListItem>
-        ))}
-      </List>
+      <Table size="small" aria-label="a dense table">
+        <TableBody>
+          {data.games.map((row:GameModel) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                <h3>{row.name}</h3>
+              </TableCell>
+              <TableCell component="th" scope="row">
+                <Button
+                  variant="contained"
+                  size="small"
+                  startIcon={<InputIcon />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    contextStore.setState({ game_id: row.id, item_id: null });
+                    navigate("/play");
+                  }}
+                ><Trans>games.join</Trans></Button>
+              </TableCell>
+              <TableCell align="right">
+                <Button
+                    variant="contained"
+                    size="small"
+                    startIcon={<ContentCopy />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      flash.open(t('games.copied'));
+                      navigator.clipboard.writeText(row.id);
+                    }}
+                  ><Trans>games.copy</Trans></Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

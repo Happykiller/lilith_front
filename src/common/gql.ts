@@ -19,12 +19,20 @@ export class GQL {
       ) {
         id
         name
+        author {
+          id
+          code
+        }
         voting
         members
         items {
           id
           name
           author_id
+          author {
+            id
+            code
+          }
           state
           votes {
             id

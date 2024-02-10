@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Trans } from 'react-i18next';
 
 import '@component/admin.scss';
-import { Footer } from '@component/Footer';
 import { Games } from '@component/Games';
+import { Footer } from '@component/Footer';
+import ResponsiveAppBar from '@component/Bar';
+import { JoinGame } from '@component/JoinGame';
 import { FormGame } from '@component/FormGame';
-import ResponsiveAppBar from '@src/component/Bar';
 
 export const Admin = () => {
   return (
@@ -16,7 +17,11 @@ export const Admin = () => {
           <Trans>admin.title</Trans>
         </div>
         <div className='games'>
+          <h2><Trans>admin.newGame</Trans></h2>
           <FormGame />
+          <h2><Trans>admin.joinGame</Trans></h2>
+          <JoinGame />
+          <h2><Trans>admin.yourGames</Trans></h2>
           <Games/>
         </div>
         <Footer />
