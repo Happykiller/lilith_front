@@ -71,7 +71,7 @@ export class GQL {
       $item_id: String!
       $vote_id: String!
     ) {
-      removeVote(
+      deleteVote(
         dto: {
           game_id: $game_id
           item_id: $item_id
@@ -132,7 +132,6 @@ export class GQL {
         dto: {
           game_id: $game_id
           item_id: $item_id
-          member: $member
           vote: $vote
         }
       ) {

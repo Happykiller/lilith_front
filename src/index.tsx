@@ -112,7 +112,7 @@ const cache = new InMemoryCache({
         }
       },
     },
-    GameItemRecordObjectResolver: {
+    ItemResolverModel: {
       fields: {
         votes: {
           merge(existing, incoming) {

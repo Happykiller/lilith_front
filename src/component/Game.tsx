@@ -40,9 +40,6 @@ export const Game = () => {
       game: respQry.data?.game || respSub.data?.subToGame
     }
 
-    console.log('context.id', context.id)
-    console.log('data.game.members', data.game.members)
-
     let formCreateItem;
     if (
       context.id

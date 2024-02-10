@@ -1,9 +1,9 @@
 {
   "admin": {
-    "title": "Les games"
+    "title": "Les parties"
   },
   "bar": {
-    "games": "Games",
+    "games": "Les parties",
     "logout": "Quitter"
   },
   "createItem": {
@@ -37,7 +37,7 @@
   },
   "formGame": {
     "game": {
-      "label": "Entrer le nom de game"
+      "label": "Entrer le nom de la partie"
     }
   },
   "item": {

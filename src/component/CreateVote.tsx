@@ -24,43 +24,38 @@ export const CreateVote = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (context.code && param.game.members.find((elt:any) => elt.name === context.code)) {
-    return <p></p>
-  } else {
-    return (
-      <div>
-        <form className="formCreateVote"
-          onSubmit={e => {
-            e.preventDefault();
-            CreateVoteSmt({ variables: { 
-              game_id: context.game_id,
-              member: context.code,
-              vote: vote,
-              item_id: context.item_id
-            } });
-          }}
+  return (
+    <div>
+      <form className="formCreateVote"
+        onSubmit={e => {
+          e.preventDefault();
+          CreateVoteSmt({ variables: { 
+            game_id: context.game_id,
+            vote: vote,
+            item_id: context.item_id
+          } });
+        }}
+      >
+        <Select
+          sx={{ marginRight:1}}
+          labelId="selectVote"
+          id="selectVote"
+          value={vote}
+          label="Vote"
+          size='small'
+          onChange={handleChange}
         >
-          <Select
-            sx={{ marginRight:1}}
-            labelId="selectVote"
-            id="selectVote"
-            value={vote}
-            label="Vote"
-            size='small'
-            onChange={handleChange}
-          >
-            {param.game.voting.map((voting: any) => (
-              <MenuItem value={voting} key={voting}>{voting}</MenuItem>
-            ))}
-          </Select>
-          <Button 
-            type="submit"
-            variant="contained"
-            size="small"
-            startIcon={<Send />}
-          ><Trans>createVote.vote</Trans></Button>
-        </form>
-      </div>
-    );
-  }
+          {param.game.voting.map((voting: any) => (
+            <MenuItem value={voting} key={voting}>{voting}</MenuItem>
+          ))}
+        </Select>
+        <Button 
+          type="submit"
+          variant="contained"
+          size="small"
+          startIcon={<Send />}
+        ><Trans>createVote.vote</Trans></Button>
+      </form>
+    </div>
+  );
 };

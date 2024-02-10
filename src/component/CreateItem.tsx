@@ -21,8 +21,7 @@ export const CreateItem = () => {
           e.preventDefault();
           createItemSmt({ variables: { 
             name: itemLabel, 
-            game_id: context.game_id,
-            author: context.code
+            game_id: context.game_id
           } });
           setItemLabel('');
         }}
@@ -44,7 +43,7 @@ export const CreateItem = () => {
             variant="contained"
             size="small"
             startIcon={<Add />}
-            disabled={!(itemLabel && itemLabel.length > 3) || context.code === null}
+            disabled={!(itemLabel && itemLabel.length > 3) || context.id === null}
           ><Trans>common.create</Trans></Button>
         </Box>
       </form>

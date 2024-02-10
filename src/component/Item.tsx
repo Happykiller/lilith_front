@@ -12,21 +12,20 @@ export const Item = (param: {
   game: any
 }) => {
   const context:ContextStore = contextStore();
+  const [revealSmt, stateRevealSmt] = useMutation(GQL.MUT_REVEAL);
+  const [resetSmt, stateResetSmt] = useMutation(GQL.MUT_RESET);
+
   if (context.item_id) {
     const { t } = useTranslation();
     const currentItem = param.game.items.find((item:any) => item.id === context.item_id);
 
     if (currentItem) {
-      const [revealSmt, { data, loading, error }] = useMutation(GQL.MUT_REVEAL);
-      const [resetSmt, state] = useMutation(GQL.MUT_RESET);
-
       let formVote;
       if (
-        currentItem
-        && context.code
+        context.id
         && currentItem.state !== 'REVEAL'
-        && param.game.members.includes(context.code)
-        && !currentItem.votes.find((elt:any) => elt.member === context.code)
+        && param.game.members.includes(context.id)
+        && !currentItem.votes.find((elt:any) => elt.author_id === context.id)
       ) {
         formVote = <CreateVote
         game={param.game}
@@ -37,10 +36,9 @@ export const Item = (param: {
 
       let revealBt;
       if (
-        currentItem
-        && currentItem.state !== 'REVEAL'
-        && param.game.members.includes(context.code)
-        && context.code === currentItem.author
+        currentItem.state !== 'REVEAL'
+        && param.game.members.includes(context.id)
+        && context.id === currentItem.author_id
       ) {
         revealBt = <form
         onSubmit={e => { 
@@ -69,23 +67,23 @@ export const Item = (param: {
         {revealBt}
         <List>
           {
-            param.game.members.map((member: any) => {
-              const vote = currentItem.votes.find((vote:any) => vote.member === member);
+            param.game.members.map((user_id: any) => {
+              const vote = currentItem.votes.find((vote:any) => vote.author_id === user_id);
               if (!vote) {
                 if (currentItem.state !== 'REVEAL') {
                   return (
-                    <ListItem disablePadding key={member}>
-                      {member} = &gt; ?
+                    <ListItem disablePadding key={user_id}>
+                      {user_id} = &gt; ?
                     </ListItem>
                   )
                 } else {
                   return
                 }
-              } else if (vote.member === context.code) {
+              } else if (vote.author_id === context.id) {
                 if (currentItem.state !== 'REVEAL') {
                   return (
-                    <ListItem disablePadding key={member}>
-                      {vote.member} = &gt; {vote.vote} <form
+                    <ListItem disablePadding key={user_id}>
+                      {vote.author_id} = &gt; {vote.vote} <form
                         onSubmit={e => { 
                           e.preventDefault();
                           resetSmt({ 
@@ -109,20 +107,20 @@ export const Item = (param: {
                   )
                 } else {
                   return (
-                    <ListItem disablePadding key={member}>
-                      {vote.member} = &gt; {vote.vote}
+                    <ListItem disablePadding key={user_id}>
+                      {vote.author_id} = &gt; {vote.vote}
                     </ListItem>
                   )
                 }
               } else if (currentItem.state === 'REVEAL') {
                 return (
-                  <ListItem disablePadding key={member}>
-                    {vote.member} = &gt; {vote.vote}
+                  <ListItem disablePadding key={user_id}>
+                    {vote.author_id} = &gt; {vote.vote}
                   </ListItem>
                 )
               } else {
                 return (
-                  <ListItem disablePadding key={member}>
+                  <ListItem disablePadding key={user_id}>
                     {vote.member} = &gt; <Trans>item.suspence</Trans>
                   </ListItem>
                 )  

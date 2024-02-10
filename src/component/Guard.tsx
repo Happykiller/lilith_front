@@ -8,7 +8,7 @@ export function Guard({ children }: { children: JSX.Element }) {
   
   const context:ContextStore = contextStore();
 
-  if (!context.code) {
+  if (!context.id) {
     return <Navigate to="/" state={{ from: location }} replace />;
   } else {
     return children;

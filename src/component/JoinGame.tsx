@@ -16,10 +16,10 @@ export const JoinGame = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
-  if (!context.code) {
+  if (!context.id) {
     return <Trans>joinGame.log</Trans>
   } else {
-    if (!param.game.members.includes(context.code)) {
+    if (!param.game.members.includes(context.id)) {
       return (
         <div>
           <form className="formJoinGame"
