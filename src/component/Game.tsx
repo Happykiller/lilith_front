@@ -7,7 +7,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { GQL } from '@src/common/gql';
 import { Item } from '@component/Item';
 import { CreateItem } from '@component/CreateItem';
-import { ContextStore, contextStore } from '@src/component/ContextStore';
+import { ContextStore, contextStore } from '@component/ContextStore';
 
 export const Game = () => {
   const context:ContextStore = contextStore();

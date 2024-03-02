@@ -19,12 +19,17 @@ export class GQL {
       ) {
         id
         name
+        voting
+        author_id
         author {
           id
           code
         }
-        voting
         members
+        members_obj {
+          id
+          code
+        }
         items {
           id
           name
@@ -37,7 +42,7 @@ export class GQL {
           votes {
             id
             author_id
-            user {
+            author {
               id
               code
             }
@@ -130,6 +135,35 @@ export class GQL {
         id
         name
         voting
+        author_id
+        author {
+          id
+          code
+        }
+        members
+        members_obj {
+          id
+          code
+        }
+        items {
+          id
+          name
+          author_id
+          author {
+            id
+            code
+          }
+          state
+          votes {
+            id
+            author_id
+            author {
+              id
+              code
+            }
+            vote
+          }
+        }
       }
     }
   `;

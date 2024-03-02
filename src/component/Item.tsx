@@ -6,14 +6,14 @@ import { Button, IconButton, List, ListItem } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
 import { CreateVote } from '@component/CreateVote';
-import { ContextStore, contextStore } from '@src/component/ContextStore';
+import { ContextStore, contextStore } from '@component/ContextStore';
 
 export const Item = (param: {
   game: any
 }) => {
   const context:ContextStore = contextStore();
-  const [revealSmt, stateRevealSmt] = useMutation(GQL.MUT_REVEAL);
   const [resetSmt, stateResetSmt] = useMutation(GQL.MUT_RESET);
+  const [revealSmt, stateRevealSmt] = useMutation(GQL.MUT_REVEAL);
 
   if (context.item_id) {
     const { t } = useTranslation();
@@ -79,16 +79,16 @@ export const Item = (param: {
             /**
              * View all member of game
              */
-            param.game.members.map((user_id: any) => {
-              const vote = currentItem.votes.find((vote:any) => vote.author_id === user_id);
+            param.game.members_obj.map((user: any) => {
+              const vote = currentItem.votes.find((vote:any) => vote.author_id === user.id);
               if (!vote) {
                 /**
                  * If the user no vote yet and item not reveal show him 
                  */
                 if (currentItem.state !== 'REVEAL') {
                   return (
-                    <ListItem disablePadding key={user_id}>
-                      {context.code} = &gt; ?
+                    <ListItem disablePadding key={user.id}>
+                      {user.code} = &gt; ?
                     </ListItem>
                   )
                 } else {
@@ -100,8 +100,8 @@ export const Item = (param: {
                  */
                 if (currentItem.state !== 'REVEAL') {
                   return (
-                    <ListItem disablePadding key={user_id}>
-                      {vote.user.code} = &gt; {vote.vote} <form
+                    <ListItem disablePadding key={user.id}>
+                      {vote.author.code} = &gt; {vote.vote} <form
                         onSubmit={e => { 
                           e.preventDefault();
                           resetSmt({ 
@@ -128,8 +128,8 @@ export const Item = (param: {
                  */
                 } else {
                   return (
-                    <ListItem disablePadding key={vote.user.id}>
-                      {vote.user.code} = &gt; {vote.vote}
+                    <ListItem disablePadding key={vote.author.id}>
+                      {vote.author.code} = &gt; {vote.vote}
                     </ListItem>
                   )
                 }
@@ -138,8 +138,8 @@ export const Item = (param: {
                */
               } else if (currentItem.state === 'REVEAL') {
                 return (
-                  <ListItem disablePadding key={vote.user.id}>
-                    {vote.user.code} = &gt; {vote.vote}
+                  <ListItem disablePadding key={vote.author.id}>
+                    {vote.author.code} = &gt; {vote.vote}
                   </ListItem>
                 )
               /**
@@ -147,8 +147,8 @@ export const Item = (param: {
                */
               } else {
                 return (
-                  <ListItem disablePadding key={vote.user.id}>
-                    {vote.user.code} = &gt; <Trans>item.suspence</Trans>
+                  <ListItem disablePadding key={vote.author.id}>
+                    {vote.author.code} = &gt; <Trans>item.suspence</Trans>
                   </ListItem>
                 )  
               }

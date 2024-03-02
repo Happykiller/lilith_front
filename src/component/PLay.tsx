@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import '@component/play.scss';
-import { Footer } from '@component/Footer';
 import { Game } from '@component/Game';
-import ResponsiveAppBar from './Bar';
+import { Footer } from '@component/Footer';
+import ResponsiveAppBar from '@component/Bar';
 
 export const Play = () => {
   return (
