@@ -61,6 +61,9 @@ export const Game = () => {
         <div className='title'>
           <h1>{data.game.name}</h1>
           <h2><Trans>game.author</Trans>{data.game.author.code}</h2>
+          <h4><Trans>game.members</Trans>{data.game.members_obj.map((member:any, index:number) => {
+            return `${(index!==0)?', ':''}${member.code}`
+          })}</h4>
         </div>
         {formCreateItem}
         <p>
