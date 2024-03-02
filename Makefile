@@ -10,6 +10,17 @@ down:
 reset: down
 	docker rm lilith_front
 
+tar: 
+	docker build -t lilith_front -f Dockerfile .
+	docker save lilith_front -o lilith_front.tar
+
+install:
+	docker stop lilith_front
+	docker rm lilith_front
+	docker image rm lilith_front
+	docker load -i lilith_front.tar
+	docker run -d --restart=always -p 8085:80 --name lilith_front lilith_front
+
 help:
 	@echo ""
 	@echo "~~ Lilith_front Makefile ~~"
