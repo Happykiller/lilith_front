@@ -84,6 +84,7 @@ export const Game = () => {
                     contextStore.setState({ item_id: item.id });
                   }}
                 >{item.name}</Button>
+                {(item.state === 'REVEAL')?' Fini':''}
               </div>
             </ListItem>
           ))}

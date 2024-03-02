@@ -1,0 +1,30 @@
+.card {
+  width: 100px;
+  height: 150px;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  margin: 10px;
+  display: inline-block;
+  background-color: #fff;
+  color: black;
+  position: relative;
+}
+
+.card .rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 16px;
+}
+
+.card .winner {
+  font-weight: bolder;
+  color: #27ae60;
+}
+
+.card .suit {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 16px;
+}

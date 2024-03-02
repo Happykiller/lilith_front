@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useMutation } from "@apollo/client";
 import { Trans, useTranslation } from 'react-i18next';
-import { Add, RestartAlt, Visibility } from '@mui/icons-material';
-import { Button, IconButton, List, ListItem } from '@mui/material';
+import { Add, RestartAlt, Send, Visibility } from '@mui/icons-material';
+import { Button, Grid, IconButton, ListItem, MenuItem, Select, Typography, colors } from '@mui/material';
 
+import '@component/item.scss';
 import { GQL } from '@src/common/gql';
 import { CreateVote } from '@component/CreateVote';
 import { ContextStore, contextStore } from '@component/ContextStore';
@@ -11,34 +12,85 @@ import { ContextStore, contextStore } from '@component/ContextStore';
 export const Item = (param: {
   game: any
 }) => {
+  const { t } = useTranslation();
   const context:ContextStore = contextStore();
   const [resetSmt, stateResetSmt] = useMutation(GQL.MUT_RESET);
   const [revealSmt, stateRevealSmt] = useMutation(GQL.MUT_REVEAL);
 
+  const Vote = (props: { args: any }) => {
+
+    let content = <div></div>;
+
+    if(props.args.state === 'NO_VOTED_AND_NOT_REVEAL') {
+      content = (
+        <div className="card">
+          <div className="rank">?</div>
+          <div className="suit"><Typography noWrap>{props.args.user.code}</Typography></div>
+        </div>
+      )
+    } else if(props.args.state === 'VOTED_AND_REVEAL') {
+      content = (
+        <div className="card">
+          <div className={`rank ${(props.args.winner===props.args.vote.vote)?'winner':''}`}>{props.args.vote.vote}</div>
+          <div className="suit"><Typography noWrap>{props.args.vote.author.code}</Typography></div>
+        </div>
+      )
+    } else if(props.args.state === 'VOTED_AND_NOT_REVEAL') {
+      content = (
+        <div className="card">
+          <div className="rank">:D</div>
+          <div className="suit"><Typography noWrap>{props.args.vote.author.code}</Typography></div>
+        </div>
+      )
+    } else if(props.args.state === 'VOTED') {
+      content = (
+        <div className="card">
+          <div className="rank">{props.args.vote.vote}</div>
+          <div className="suit">
+            <IconButton 
+              size="small"
+              title={t('item.reset')}
+              sx={{ 
+                color: "#018786", 
+                backgroundColor: "#F5EBFF"
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                resetSmt({ 
+                  variables: { 
+                    game_id: context.game_id,
+                    item_id: context.item_id,
+                    vote_id: props.args.vote.id
+                  } 
+                });
+              }}>
+              <RestartAlt/>
+            </IconButton>
+          </div>
+        </div>
+      )
+    } else if(props.args.state === 'HAVE_TO_VOTE') {
+      content = (
+        <CreateVote game={param.game}/>
+      )
+    }
+
+    return (
+      <Grid
+        item
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {content}
+      </Grid>
+    )
+  }
+
   if (context.item_id) {
-    const { t } = useTranslation();
     const currentItem = param.game.items.find((item:any) => item.id === context.item_id);
 
     if (currentItem) {
-
-      /**
-       * Voting possible
-       * If not reveal and not vote already
-       */
-      let formVote;
-      if (
-        context.id
-        && currentItem.state !== 'REVEAL'
-        && param.game.members.includes(context.id)
-        && !currentItem.votes.find((elt:any) => elt.author_id === context.id)
-      ) {
-        formVote = <CreateVote
-        game={param.game}
-        />
-      } else {
-        formVote = <p></p>
-      }
-
       /**
        * Reveal possible
        * If not reveal and author of the item
@@ -69,93 +121,93 @@ export const Item = (param: {
         revealBt = <p></p>
       }
 
+      /**
+       * Cal stat
+       */
+      let winner:string = null;
+      if (currentItem.state === 'REVEAL') {
+        let choosen:any = {};
+        for (const vote of currentItem.votes) {
+          if(!choosen[vote.vote]){
+            choosen[vote.vote] = 1;
+          } else {
+            choosen[vote.vote]++;
+          }
+        }
+        let max = 0;
+        Object.keys(choosen).forEach((k) => {
+          if (choosen[k] > max) {
+            winner = k;
+            max = choosen[k];
+          }
+        });
+      }
+
       return <div>
         <p>
           <u><Trans>item.item</Trans></u>{currentItem.name} (<Trans>item.author</Trans>{currentItem.author.code})
         </p>
         {revealBt}
-        <List>
+        <Grid
+          container
+        >
           {
             /**
              * View all member of game
              */
             param.game.members_obj.map((user: any) => {
               const vote = currentItem.votes.find((vote:any) => vote.author_id === user.id);
-              if (!vote) {
-                /**
-                 * If the user no vote yet and item not reveal show him 
-                 */
-                if (currentItem.state !== 'REVEAL') {
+              if (currentItem.state !== 'REVEAL') {
+                if (!vote && user.id === context.id) {
                   return (
-                    <ListItem disablePadding key={user.id}>
-                      {user.code} = &gt; ?
-                    </ListItem>
+                    <Vote key={user.id} args={{
+                      user: user,
+                      state: 'HAVE_TO_VOTE'
+                    }}/>
                   )
-                } else {
-                  return
-                }
-              } else if (vote.author_id === context.id) {
-                /**
-                 * If the user has vote and item not reveal show his vote active
-                 */
-                if (currentItem.state !== 'REVEAL') {
+                } else if (vote && vote.author_id === context.id) {
                   return (
-                    <ListItem disablePadding key={user.id}>
-                      {vote.author.code} = &gt; {vote.vote} <form
-                        onSubmit={e => { 
-                          e.preventDefault();
-                          resetSmt({ 
-                            variables: { 
-                              game_id: context.game_id,
-                              item_id: context.item_id,
-                              vote_id: vote.id
-                            } 
-                          });
-                        }}
-                      >
-                        <IconButton 
-                          type="submit"
-                          size="small"
-                          title={t('item.reset')}
-                        >
-                          <RestartAlt/>
-                        </IconButton>
-                      </form>
-                    </ListItem>
+                    <Vote key={user.id} args={{
+                      vote: vote,
+                      state: 'VOTED'
+                    }}/>
                   )
-                /**
-                 * If the user has vote and item reveal show his vote inactive
-                 */
-                } else {
+                } else if(vote) {
                   return (
-                    <ListItem disablePadding key={vote.author.id}>
-                      {vote.author.code} = &gt; {vote.vote}
-                    </ListItem>
+                    <Vote key={vote.author.id} args={{
+                      vote: vote,
+                      state: 'VOTED_AND_NOT_REVEAL'
+                    }}/>
+                  )
+                } else { // !vote 
+                  return (
+                    <Vote key={user.id} args={{
+                      user: user,
+                      state: 'NO_VOTED_AND_NOT_REVEAL'
+                    }}/>
                   )
                 }
-              /**
-               * If not his vote and item is reveal
-               */
-              } else if (currentItem.state === 'REVEAL') {
-                return (
-                  <ListItem disablePadding key={vote.author.id}>
-                    {vote.author.code} = &gt; {vote.vote}
-                  </ListItem>
-                )
-              /**
-               * If not his vote and item is not reveal
-               */
               } else {
-                return (
-                  <ListItem disablePadding key={vote.author.id}>
-                    {vote.author.code} = &gt; <Trans>item.suspence</Trans>
-                  </ListItem>
-                )  
+                // REVEAL
+                if (vote) {
+                  return (
+                    <Vote key={vote.author.id} args={{
+                      vote: vote,
+                      state: 'VOTED_AND_REVEAL',
+                      winner
+                    }}/>
+                  )
+                } else {
+                  <Vote key={user.id} args={{
+                    user: user,
+                    state: 'NO_VOTED_AND_REVEAL',
+                    winner
+                  }}/>
+                }
               }
             })
           }
-        </List>
-        {formVote}
+        </Grid>
       </div>
     }
     

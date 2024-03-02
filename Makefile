@@ -19,7 +19,7 @@ install:
 	docker rm lilith_front
 	docker image rm lilith_front
 	docker load -i lilith_front.tar
-	docker run -d --restart=always -p 8085:80 --name lilith_front lilith_front
+	docker run -d --restart=always -p 8080:80 --name lilith_front lilith_front
 
 help:
 	@echo ""
