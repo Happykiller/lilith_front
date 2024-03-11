@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useMutation } from "@apollo/client";
 import { Trans, useTranslation } from 'react-i18next';
-import { Add, RestartAlt, Send, Visibility } from '@mui/icons-material';
-import { Button, Grid, IconButton, ListItem, MenuItem, Select, Typography, colors } from '@mui/material';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { RestartAlt, Visibility } from '@mui/icons-material';
+import { Button, Chip, Divider, Grid, IconButton, Link, Tooltip, Typography } from '@mui/material';
 
 import '@component/item.scss';
 import { GQL } from '@src/common/gql';
@@ -78,6 +79,7 @@ export const Item = (param: {
     return (
       <Grid
         item
+        xs={3}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -101,22 +103,25 @@ export const Item = (param: {
         && param.game.members.includes(context.id)
         && context.id === currentItem.author_id
       ) {
-        revealBt = <form
-        onSubmit={e => { 
-          e.preventDefault();
-          revealSmt({ variables: { 
-            game_id: context.game_id,
-            item_id: context.item_id
-          } });
-        }}
-      >
-        <Button 
-          type="submit"
-          variant="contained"
-          size="small"
-          startIcon={<Visibility />}
-        ><Trans>item.reveal</Trans></Button>
-      </form>
+        revealBt = <Grid
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          marginTop={1}
+        >
+          <Button 
+            variant="contained"
+            size="small"
+            startIcon={<Visibility />}
+            onClick={e => { 
+              e.preventDefault();
+              revealSmt({ variables: { 
+                game_id: context.game_id,
+                item_id: context.item_id
+              } });
+            }}
+          ><Trans>item.reveal</Trans></Button>
+        </Grid>
       } else {
         revealBt = <p></p>
       }
@@ -143,10 +148,35 @@ export const Item = (param: {
         });
       }
 
+      let openBt = <></>;
+      if (currentItem.url){
+        openBt = (
+          <IconButton 
+            title={currentItem.url}
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(currentItem.url, '_blank');
+            }
+          }>
+            <OpenInNewIcon />
+          </IconButton>
+        )
+      }
+
       return <div>
-        <p>
-          <u><Trans>item.item</Trans></u>{currentItem.name} (<Trans>item.author</Trans>{currentItem.author.code})
-        </p>
+        <Divider>
+          <Tooltip title={
+            <>
+              Autheur: {currentItem.author.code}<br/>
+              {currentItem.description?`Description: ${currentItem.description}`:''}
+            </>
+          }>
+            <Chip 
+              label={currentItem.name}
+            />
+          </Tooltip>
+          {openBt}
+        </Divider>
         {revealBt}
         <Grid
           container

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import InputIcon from '@mui/icons-material/Input';
+import { ContentCopy } from '@mui/icons-material';
 import { Trans, useTranslation } from 'react-i18next';
 import { Button, Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
-import { contextStore } from '@src/component/ContextStore';
-import { ContentCopy } from '@mui/icons-material';
-import { FlashStore, flashStore } from './Flash';
+import { contextStore } from '@component/ContextStore';
+import { FlashStore, flashStore } from '@component/Flash';
 
 export const Games = () => {
   const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_GAMES);

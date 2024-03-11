@@ -33,6 +33,8 @@ export class GQL {
         items {
           id
           name
+          url
+          description
           author_id
           author {
             id
@@ -108,15 +110,34 @@ export class GQL {
         id
         name
         voting
+        author_id
+        author {
+          id
+          code
+        }
         members
+        members_obj {
+          id
+          code
+        }
         items {
           id
           name
+          url
+          description
           author_id
+          author {
+            id
+            code
+          }
           state
           votes {
             id
             author_id
+            author {
+              id
+              code
+            }
             vote
           }
         }
@@ -148,6 +169,8 @@ export class GQL {
         items {
           id
           name
+          url
+          description
           author_id
           author {
             id
@@ -192,20 +215,34 @@ export class GQL {
     mutation createItem(
       $game_id: String!
       $name: String!
+      $url: String
+      $description: String
     ) {  
       createItem (
         dto: {
           game_id: $game_id
           name: $name
+          url: $url
+          description: $description
         }
       ) {
         id
         name
+        url
+        description
         author_id
+        author {
+          id
+          code
+        }
         state
         votes {
           id
           author_id
+          author {
+            id
+            code
+          }
           vote
         }
       }
