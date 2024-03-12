@@ -92,6 +92,9 @@ export const FormLogin = () => {
                     e.preventDefault();
                     setPassVisible(!passVisible);
                   }}
+                  sx={{
+                    cursor: 'pointer'
+                  }}
                 >
                   {(passVisible?<VisibilityOffIcon/>:<VisibilityIcon />)}
                 </InputAdornment>
@@ -105,7 +108,7 @@ export const FormLogin = () => {
             variant="contained"
             size="small"
             startIcon={<Done />}
-            disabled={!(currentLogin.length > 3 && currentSecret.length > 3)}
+            disabled={!(currentLogin.length > 2 && currentSecret.length > 3)}
           ><Trans>common.done</Trans></Button>
           {errorMessage}
         </Box>

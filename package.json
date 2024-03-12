@@ -1,6 +1,6 @@
 {
   "name": "lilith_front",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Webapp for Lilith Project",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
