@@ -65,6 +65,7 @@ export const FormGame = () => {
             <MenuItem value='1'>1, 3, 5, 8, 13, 21, 24, 34, 55, 89, ?, coffee</MenuItem>
             <MenuItem value='2'>0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, ?, coffee</MenuItem>
             <MenuItem value='3'>1, 2, 4, 8, 16, 32, 64, ?, coffee</MenuItem>
+            <MenuItem value='4'>1, 2, 3, 4, 5, 6, 7, 8, 10, 13</MenuItem>
           </Select>
           <Button 
             type="submit"
