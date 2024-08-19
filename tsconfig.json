@@ -9,6 +9,7 @@
     "baseUrl": "./",
     "paths": {
       "@src/*": ["src/*"],
+      "@page/*": ["src/page/*"],
       "@component/*": ["src/component/*"]
     },
     "resolveJsonModule": true

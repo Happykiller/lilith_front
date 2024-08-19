@@ -1,0 +1,7 @@
+services:
+  lilith_front:
+    container_name: lilith_front
+    image: lilith_front
+    ports:
+      - "8080:80"
+    restart: always

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Login } from '@mui/icons-material';
 
-import '@component/home.scss';
+import '@page/home.scss';
 import { Footer } from '@component/Footer';
 import { FormLogin } from '@component/FormLogin';
 import { ContextStore, contextStore } from '@component/ContextStore';

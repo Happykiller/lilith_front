@@ -40,7 +40,7 @@ export const Games = () => {
     <div>
       <Table size="small" aria-label="a dense table">
         <TableBody>
-          {data.games.map((row:GameModel) => (
+          {data.games.toSorted(((elt1: GameModel, elt2: GameModel) => elt1.id < elt2.id ? 1 : -1 )).map((row:GameModel) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
-import '@component/admin.scss';
+import '@page/admin.scss';
 import { Games } from '@component/Games';
 import { Footer } from '@component/Footer';
 import ResponsiveAppBar from '@component/Bar';

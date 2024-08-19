@@ -13,10 +13,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import '@src/i18n';
 import '@src/index.scss';
+import { Play } from '@page/PLay';
+import { Home } from '@page/Home';
+import { Admin } from '@page/Admin';
 import Flash from '@component/Flash';
-import { Home } from '@component/Home';
-import { Play } from '@component/PLay';
-import { Admin } from '@component/Admin';
 import { Guard } from '@component/Guard';
 
 const router = createBrowserRouter([

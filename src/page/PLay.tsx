@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import '@component/play.scss';
+import '@page/play.scss';
 import '@component/common.scss';
 import { Game } from '@component/Game';
 import { Footer } from '@component/Footer';
