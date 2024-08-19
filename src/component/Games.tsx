@@ -55,7 +55,7 @@ export const Games = () => {
                   startIcon={<InputIcon />}
                   onClick={(e) => {
                     e.stopPropagation();
-                    contextStore.setState({ game_id: row.id, item_id: null });
+                    contextStore.setState({ game_id: row.id, item_id: null, current_vote: null });
                     navigate("/play");
                   }}
                 ><Trans>games.join</Trans></Button>

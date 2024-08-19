@@ -53,7 +53,8 @@
     "reveal": "Révéler à tous",
     "reset": "Effacer",
     "suspence": "Suspence",
-    "author": "Auteur : "
+    "author": "Auteur : ",
+    "submit": "Voter"
   },
   "joinGame": {
     "login": "Merci de vous identifier",

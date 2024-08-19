@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { Trans, useTranslation } from 'react-i18next';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { RestartAlt, Visibility } from '@mui/icons-material';
-import { Button, Chip, Divider, Grid, IconButton, Link, Tooltip, Typography } from '@mui/material';
+import { Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 
 import '@component/item.scss';
 import { GQL } from '@src/common/gql';
@@ -15,8 +15,8 @@ export const Item = (param: {
 }) => {
   const { t } = useTranslation();
   const context:ContextStore = contextStore();
-  const [resetSmt, stateResetSmt] = useMutation(GQL.MUT_RESET);
-  const [revealSmt, stateRevealSmt] = useMutation(GQL.MUT_REVEAL);
+  const [resetSmt] = useMutation(GQL.MUT_RESET);
+  const [revealSmt] = useMutation(GQL.MUT_REVEAL);
 
   const Vote = (props: { args: any }) => {
 
@@ -167,7 +167,9 @@ export const Item = (param: {
         <Divider>
           <Tooltip title={
             <>
+              Nom: {currentItem.name}<br/>
               Autheur: {currentItem.author.code}<br/>
+              Statut: {currentItem.state}<br/>
               {currentItem.description?`Description: ${currentItem.description}`:''}
             </>
           }>

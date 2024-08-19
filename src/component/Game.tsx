@@ -3,7 +3,7 @@ import InputIcon from '@mui/icons-material/Input';
 import { Trans, useTranslation } from 'react-i18next';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useQuery, useSubscription } from "@apollo/client";
-import { Avatar, AvatarGroup, Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { Avatar, AvatarGroup, Box, Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
 import { Item } from '@component/Item';
@@ -109,24 +109,38 @@ export const Game = () => {
               alignItems="center"
               key={item.id}
             >
-              <Tooltip title={
-                <>
-                  Nom: {item.name}<br/>
-                  Autheur: {item.author.code}<br/>
-                  {item.description?`Description: ${item.description}`:''}
-                </>
-              }>
+              {(context.item_id === item.id)?
                 <Button
-                  variant="contained"
+                  variant='contained'
                   size="small"
                   sx={{ textTransform: 'none' }}
                   startIcon={<InputIcon />}
-                  disabled={(context.item_id === item.id)}
-                  onClick={(e) => {
-                    contextStore.setState({ item_id: item.id });
-                  }}
-                ><Typography noWrap>{item.name.split(']')[1]??item.name}</Typography></Button>
-              </Tooltip>
+                  disabled
+                >
+                  <Typography noWrap>{item.name.split(']')[1]??item.name}</Typography>
+                </Button>
+                :
+                <Tooltip 
+                  title={
+                    <>
+                      Nom: {item.name}<br/>
+                      Autheur: {item.author.code}<br/>
+                      Statut: {item.state}<br/>
+                      {item.description?`Description: ${item.description}`:''}
+                    </>
+                  }
+                >
+                    <Button
+                      variant={(item.state === 'REVEAL')?'outlined':'contained'}
+                      size="small"
+                      sx={{ textTransform: 'none' }}
+                      startIcon={<InputIcon />}
+                      onClick={(e) => {
+                        contextStore.setState({ item_id: item.id, current_vote: null });
+                      }}
+                    ><Typography noWrap>{item.name.split(']')[1]??item.name}</Typography></Button>
+                </Tooltip>
+              }
               {/* Open  */}
               <Grid
                 display={(item.url)?'block':'none'}
@@ -141,7 +155,6 @@ export const Game = () => {
                   <OpenInNewIcon />
                 </IconButton>
               </Grid>
-              {(item.state === 'REVEAL')?' Fini':''}
             </Grid>
           ))}
         </Grid>

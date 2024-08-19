@@ -12,14 +12,13 @@ export const CreateVote = (param: {
 }) => {
   const { t } = useTranslation();
   const context:ContextStore = contextStore();
-  const [createVoteSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_VOTE);
+  const [createVoteSmt, { loading, error }] = useMutation(GQL.MUT_CREATE_VOTE);
 
   const indexMiddle = Math.round((param.game.voting.length - 2) / 2);
-  const [vote, setVote] = React.useState(param.game.voting[indexMiddle]);
 
   const handleChange = (event: SelectChangeEvent) => {
     const voteChoosen = event.target.value;
-    setVote(voteChoosen);
+    contextStore.setState({ current_vote: voteChoosen });
   };
 
   if (loading) return <p>"Loading...";</p>;
@@ -35,7 +34,7 @@ export const CreateVote = (param: {
           }}
           label="Vote"
           size='small'
-          value={vote}
+          value={context.current_vote??param.game.voting[indexMiddle]}
           onChange={handleChange}
         >
           {param.game.voting.map((voting: any) => (
@@ -46,7 +45,7 @@ export const CreateVote = (param: {
       <div className="suit">
         <IconButton 
           size="small"
-          title={t('item.reset')}
+          title={t('item.submit')}
           sx={{ 
             color: "#018786", 
             backgroundColor: "#F5EBFF"
@@ -55,7 +54,7 @@ export const CreateVote = (param: {
             e.preventDefault();
             createVoteSmt({ variables: { 
               game_id: context.game_id,
-              vote: vote,
+              vote: context.current_vote??param.game.voting[indexMiddle],
               item_id: context.item_id
             }});
           }}>

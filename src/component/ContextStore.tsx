@@ -7,6 +7,7 @@ export interface ContextStore {
   accessToken: string
   game_id: string
   item_id: string,
+  current_vote: string,
   reset: () => void
 }
 
@@ -15,7 +16,8 @@ const initialState:any = {
   code: null,
   accessToken: null,
   game_id: null,
-  item_id: null
+  item_id: null,
+  current_vote: null,
 }
 
 const contextPersist = persist<ContextStore>(
