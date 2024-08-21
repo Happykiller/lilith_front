@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import InputIcon from '@mui/icons-material/Input';
 import { ContentCopy } from '@mui/icons-material';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Trans, useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from "@apollo/client";
 import { Button, Table, TableBody, TableCell, TableRow } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
@@ -12,6 +13,7 @@ import { FlashStore, flashStore } from '@component/Flash';
 
 export const Games = () => {
   const { loading, error, data, subscribeToMore } = useQuery(GQL.QRY_GAMES);
+  const [leaveGameSmt] = useMutation(GQL.MUT_LEAVE_GAME);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const flash:FlashStore = flashStore();
@@ -59,6 +61,22 @@ export const Games = () => {
                     navigate("/play");
                   }}
                 ><Trans>games.join</Trans></Button>
+              </TableCell>
+              <TableCell align="right">
+                <Button
+                    variant="contained"
+                    size="small"
+                    startIcon={<LogoutIcon />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      leaveGameSmt({ 
+                        variables: { 
+                          game_id: row.id
+                        } 
+                      });
+                      flash.open(t('games.leaved'));
+                    }}
+                  ><Trans>games.leave</Trans></Button>
               </TableCell>
               <TableCell align="right">
                 <Button

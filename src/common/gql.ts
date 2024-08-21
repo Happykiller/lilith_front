@@ -259,6 +259,16 @@ export class GQL {
     }
   `;
 
+  static MUT_LEAVE_GAME = gql`
+  mutation leave_game($game_id: String!) {  
+    leave_game (
+      dto: {
+        game_id: $game_id
+      }
+    )
+  }
+`;
+
   static SUB_GAMES = gql`
   subscription onNewGame {
     subToGames {
