@@ -117,7 +117,7 @@ export const Game = () => {
                   startIcon={<InputIcon />}
                   disabled
                 >
-                  <Typography noWrap>{item.name.split(']')[1]??item.name}</Typography>
+                  <Typography noWrap>{item.name.split(']')[item.name.split(']').length-1]??item.name}</Typography>
                 </Button>
                 :
                 <Tooltip 
@@ -138,7 +138,7 @@ export const Game = () => {
                       onClick={(e) => {
                         contextStore.setState({ item_id: item.id, current_vote: null });
                       }}
-                    ><Typography noWrap>{item.name.split(']')[1]??item.name}</Typography></Button>
+                    ><Typography noWrap>{item.name.split(']')[item.name.split(']').length-1]??item.name}</Typography></Button>
                 </Tooltip>
               }
               {/* Open  */}

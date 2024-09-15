@@ -1,3 +1,90 @@
 {
-  "root.title": "Poker Planning Lilith"
+  "admin": {
+    "joinGame": "Join a game",
+    "newGame": "Create a new game",
+    "title": "Games",
+    "yourGames": "Your games"
+  },
+  "bar": {
+    "games": "Games",
+    "logout": "Logout"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "create": "Create",
+    "done": "Submit",
+    "error": "Error: ",
+    "loading": "Loading...",
+    "nothing": "Please contact the administrator"
+  },
+  "createItem": {
+    "created": "Creation successful",
+    "description": "Description",
+    "label": "Item name",
+    "title": "Create a new item",
+    "url": "URL"
+  },
+  "createVote": {
+    "vote": "Vote"
+  },
+  "error": {
+    "credentials_wrong": "Unable to authenticate"
+  },
+  "footer": {
+    "issues": "Issues",
+    "roadmap": "Roadmap"
+  },
+  "formGame": {
+    "game": {
+      "label": "Game name"
+    }
+  },
+  "formLogin": {
+    "login": {
+      "label": "Username"
+    },
+    "name": "Name: ",
+    "secret": {
+      "label": "Secret key"
+    },
+    "error": "Error: "
+  },
+  "game": {
+    "author": "Author: ",
+    "choose": "Please choose a game",
+    "items": "Items",
+    "members": "Members: "
+  },
+  "games": {
+    "copied": "Key copied",
+    "copy": "Copy key",
+    "join": "Join",
+    "leave": "Leave",
+    "leaved": "Successfully left the game"
+  },
+  "home": {
+    "enter": "Enter",
+    "title": "Lilith Planning Poker"
+  },
+  "item": {
+    "author": "Author: ",
+    "reveal": "Reveal to all",
+    "reset": "Reset",
+    "submit": "Submit",
+    "suspence": "Suspense"
+  },
+  "joinGame": {
+    "game": {
+      "id": "Game key"
+    },
+    "join": "Join",
+    "login": "Please log in"
+  },
+  "play": {
+    "title": "The game"
+  },
+  "version": {
+    "back": "API: ",
+    "front": "Web: "
+  }
 }

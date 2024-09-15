@@ -1,88 +1,90 @@
 {
   "admin": {
-    "title": "Les parties",
-    "newGame": "Créer une nouvelle partie",
     "joinGame": "Rejoindre une partie",
+    "newGame": "Créer une nouvelle partie",
+    "title": "Les parties",
     "yourGames": "Vos parties"
   },
   "bar": {
-    "games": "Les parties",
-    "logout": "Quitter"
+    "games": "Parties",
+    "logout": "Déconnexion"
+  },
+  "common": {
+    "cancel": "Annuler",
+    "create": "Créer",
+    "done": "Valider",
+    "error": "Erreur : ",
+    "loading": "Chargement...",
+    "nothing": "Veuillez contacter l'administrateur"
   },
   "createItem": {
-    "label": "Entrer le nom d'item",
-    "url": "Entrer url",
-    "description": "Entrer description",
-    "title": "Créer un nouvel item",
-    "created": "Création réussi"
+    "created": "Création réussie",
+    "description": "Description",
+    "label": "Nom de l'élément",
+    "title": "Créer un nouvel élément",
+    "url": "URL"
   },
   "createVote": {
     "vote": "Voter"
   },
-  "common": {
-    "done": "Valider",
-    "cancel": "Annuler",
-    "create": "Créer",
-    "loading": "Chargement...",
-    "error": "Erreur : ",
-    "nothing": "Contacter l'administrateur"
-  },
   "error": {
-    "credentials_wrong": "Identification impossible"
+    "credentials_wrong": "Impossible de s'identifier"
   },
   "footer": {
-    "issues": "Anomalies",
-    "roadmap": "Roadmap"
-  },
-  "formLogin": {
-    "login": {
-      "label": "Entrer votre nom"
-    },
-    "secret": {
-      "label": "Entrer votre clé secrète"
-    },
-    "name": "Nom : ",
-    "error": "Erreur : "
+    "issues": "Problèmes",
+    "roadmap": "Feuille de route"
   },
   "formGame": {
     "game": {
-      "label": "Entrer le nom de la partie"
+      "label": "Nom de la partie"
     }
   },
-  "item": {
-    "reveal": "Révéler à tous",
-    "reset": "Effacer",
-    "suspence": "Suspence",
-    "author": "Auteur : ",
-    "submit": "Voter"
-  },
-  "joinGame": {
-    "login": "Merci de vous identifier",
-    "join": "Rejoindre",
-    "game": {
-      "id": "Clé de la partie"
-    }
-  },
-  "home": {
-    "title": "Le Poker Planning Lilith",
-    "enter": "Entrer"
+  "formLogin": {
+    "login": {
+      "label": "Nom d'utilisateur"
+    },
+    "name": "Nom : ",
+    "secret": {
+      "label": "Clé secrète"
+    },
+    "error": "Erreur : "
   },
   "game": {
-    "items": "Les items",
-    "choose": "Merci de choisir une game",
     "author": "Auteur : ",
+    "choose": "Veuillez choisir une partie",
+    "items": "Éléments",
     "members": "Membres : "
   },
   "games": {
-    "copy": "Copier clée",
+    "copied": "Clé copiée",
+    "copy": "Copier la clé",
     "join": "Rejoindre",
-    "copied": "Clé copiée"
+    "leave": "Quitter",
+    "leaved": "Vous avez quitté la partie avec succès"
+  },
+  "home": {
+    "enter": "Entrer",
+    "title": "Poker Planning Lilith"
+  },
+  "item": {
+    "author": "Auteur : ",
+    "reveal": "Révéler à tous",
+    "reset": "Réinitialiser",
+    "submit": "Soumettre",
+    "suspence": "Suspense"
+  },
+  "joinGame": {
+    "game": {
+      "id": "Clé de la partie"
+    },
+    "join": "Rejoindre",
+    "login": "Veuillez vous identifier"
   },
   "play": {
-    "title": "La game"
+    "title": "La partie"
   },
   "version": {
-    "front": "Web: ",
-    "back": "Apis: "
+    "back": "API : ",
+    "front": "Web : "
   }
 }
