@@ -2,6 +2,7 @@ const path = require("path");
 const dotenv = require('dotenv');
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin") ;
+const CopyWebpackPlugin = require('copy-webpack-plugin'); // Importer le plugin
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // Import MiniCssExtractPlugin
 
@@ -104,6 +105,12 @@ module.exports = (env, argv) => {
 
       new DefinePlugin({
         'process.env': JSON.stringify(configuration.config(dotenv.config().parsed))
+      }),
+
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'public', to: 'public' }, // Copie tout le contenu du dossier public vers /dist/public
+        ],
       }),
 
       isProduction && new MiniCssExtractPlugin({

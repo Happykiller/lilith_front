@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useMutation } from "@apollo/client";
 import { Trans, useTranslation } from 'react-i18next';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { RestartAlt, Visibility } from '@mui/icons-material';
+import { Bolt, RestartAlt, Visibility } from '@mui/icons-material';
 import { Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 
 import '@component/item.scss';
@@ -18,6 +18,12 @@ export const Item = (param: {
   const [resetSmt] = useMutation(GQL.MUT_RESET);
   const [revealSmt] = useMutation(GQL.MUT_REVEAL);
 
+  const getImageForVote = (vote: string) => {
+    const index = param.game.voting.indexOf(vote);
+    // Vous pouvez ici personnaliser l'URL en fonction du vote
+    return `public/${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
+  };
+
   const Vote = (props: { args: any }) => {
 
     let content = <div></div>;
@@ -26,26 +32,31 @@ export const Item = (param: {
       content = (
         <div className="card">
           <div className="rank">?</div>
-          <div className="suit"><Typography noWrap>{props.args.user.code}</Typography></div>
+          <div className="suit"><Typography noWrap fontWeight="bold">{props.args.user.code}</Typography></div>
         </div>
       )
     } else if(props.args.state === 'VOTED_AND_REVEAL') {
       content = (
-        <div className="card">
+        <div className="card" style={{ backgroundImage: `url(${getImageForVote(props.args.vote.vote)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <div className={`rank ${(props.args.winner===props.args.vote.vote)?'winner':''}`}>{props.args.vote.vote}</div>
-          <div className="suit"><Typography noWrap>{props.args.vote.author.code}</Typography></div>
+          <div className="suit"><Typography noWrap fontWeight="bold" sx={{
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fond blanc semi-transparent
+        display: 'inline-block', // Pour que le fond prenne juste la taille du texte
+        padding: '3px', // Espacement interne pour le texte
+        borderRadius: '2px' // Coins arrondis
+      }}>{props.args.vote.author.code}</Typography></div>
         </div>
       )
     } else if(props.args.state === 'VOTED_AND_NOT_REVEAL') {
       content = (
         <div className="card">
           <div className="rank">:D</div>
-          <div className="suit"><Typography noWrap>{props.args.vote.author.code}</Typography></div>
+          <div className="suit"><Typography noWrap fontWeight="bold">{props.args.vote.author.code}</Typography></div>
         </div>
       )
     } else if(props.args.state === 'VOTED') {
       content = (
-        <div className="card">
+        <div className="card" style={{ backgroundImage: `url(${getImageForVote(props.args.vote.vote)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <div className="rank">{props.args.vote.vote}</div>
           <div className="suit">
             <IconButton 

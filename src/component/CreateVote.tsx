@@ -27,7 +27,7 @@ export const CreateVote = (param: {
   const getImageForVote = (vote: string) => {
     const index = param.game.voting.indexOf(vote);
     // Vous pouvez ici personnaliser l'URL en fonction du vote
-    return `${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
+    return `public/${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
   };
   const backgroundImage = getImageForVote(context.current_vote??param.game.voting[indexMiddle]);
 
