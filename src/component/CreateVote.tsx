@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { IconButton, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
-import { ContextStore, contextStore } from '@src/component/ContextStore';
+import { ContextStore, contextStore } from '@component/ContextStore';
 
 export const CreateVote = (param: {
   game: any
@@ -24,8 +24,15 @@ export const CreateVote = (param: {
   if (loading) return <p>"Loading...";</p>;
   if (error) return <p>`Error! ${error.message}`</p>;
 
+  const getImageForVote = (vote: string) => {
+    const index = param.game.voting.indexOf(vote);
+    // Vous pouvez ici personnaliser l'URL en fonction du vote
+    return `${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
+  };
+  const backgroundImage = getImageForVote(context.current_vote??param.game.voting[indexMiddle]);
+
   return (
-    <div className="card">
+    <div className="card" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="rank">
         <Select
           sx={{ 
