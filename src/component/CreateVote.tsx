@@ -1,4 +1,4 @@
-import * as React from 'react';
+// src\component\CreateVote.tsx
 import { Send } from '@mui/icons-material';
 import { useMutation } from "@apollo/client";
 import { useTranslation } from 'react-i18next';
@@ -26,8 +26,7 @@ export const CreateVote = (param: {
 
   const getImageForVote = (vote: string) => {
     const index = param.game.voting.indexOf(vote);
-    // Vous pouvez ici personnaliser l'URL en fonction du vote
-    return `public/${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
+    return `public/${(index>11)?11:index}.png`;
   };
   const backgroundImage = getImageForVote(context.current_vote??param.game.voting[indexMiddle]);
 
@@ -39,7 +38,6 @@ export const CreateVote = (param: {
             color: "#018786", 
             backgroundColor: "#F5EBFF"
           }}
-          label="Vote"
           size='small'
           value={context.current_vote??param.game.voting[indexMiddle]}
           onChange={handleChange}

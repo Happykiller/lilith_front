@@ -1,159 +1,102 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Menu from '@mui/material/Menu';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+// src\component\Bar.tsx
+import { useState, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from "react-i18next";
+import {
+  AppBar, Avatar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Box
+} from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 
-import '@component/bar.scss';
-import { ContextStore, contextStore } from '@component/ContextStore';
+import "@component/bar.scss";
+import { contextStore } from "@component/ContextStore";
 
-const pages = ['games'];
-const settings = ['logout'];
+const PAGES = [{ key: "games", route: "/admin" }];
+const SETTINGS = [{ key: "logout", action: "logout" }];
 
 function Bar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const context:ContextStore = contextStore();
+  const context = contextStore();
   const reset = contextStore((state) => state.reset);
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleCloseNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(null);
-    switch(event.currentTarget.innerText.toLowerCase()) { 
-      case t('bar.games').toLowerCase(): {
-        navigate("/admin");
-        break; 
-      }
-    } 
-  };
+  const handleMenuOpen = useCallback((setAnchor: Function) => (event: React.MouseEvent<HTMLElement>) => {
+    setAnchor(event.currentTarget);
+  }, []);
 
-  const handleCloseUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(null);
-    switch(event.currentTarget.innerText.toLowerCase()) { 
-      case t('bar.logout').toLowerCase(): {
-        reset();
-        break; 
-      }
-    } 
-  };
+  const handleMenuClose = useCallback((setAnchor: Function, action?: string, route?: string) => () => {
+    setAnchor(null);
+    if (route) navigate(route);
+    if (action === "logout") reset();
+  }, [navigate, reset]);
+
+  const avatarLabel = useMemo(() => context.code?.substring(0, 3) || "", [context.code]);
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' }
-            }}
-          >
-            <Link to="/admin" className='lilith'>Lilith</Link>
+          {/* Desktop Title */}
+          <Typography variant="h6" noWrap sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
+            <Link to="/admin" className="lilith">Lilith</Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+          {/* Mobile Navigation Menu */}
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton size="large" aria-label="menu" color="inherit" onClick={handleMenuOpen(setAnchorElNav)}>
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+              onClose={handleMenuClose(setAnchorElNav)}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
+              keepMounted
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Trans>bar.{page}</Trans></Typography>
+              {PAGES.map(({ key, route }) => (
+                <MenuItem key={key} onClick={handleMenuClose(setAnchorElNav, undefined, route)}>
+                  <Typography textAlign="center"><Trans>bar.{key}</Trans></Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1
-            }}
-          >
-            <Link to="/admin" className='lilith'>Lilith</Link>
+
+          {/* Mobile Title */}
+          <Typography variant="h5" noWrap sx={{ mr: 2, flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <Link to="/admin" className="lilith">Lilith</Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Trans>bar.{page}</Trans>
+
+          {/* Desktop Navigation Menu */}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {PAGES.map(({ key, route }) => (
+              <Button key={key} onClick={handleMenuClose(setAnchorElNav, undefined, route)} sx={{ my: 2, color: "white" }}>
+                <Trans>bar.{key}</Trans>
               </Button>
             ))}
           </Box>
 
+          {/* User Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={context.code}>{context.code.substring(0, 3)}</Avatar>
+            <Tooltip title={ t('bar.settings')}>
+              <IconButton onClick={handleMenuOpen(setAnchorElUser)} sx={{ p: 0 }}>
+                <Avatar alt={avatarLabel}>{avatarLabel}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={handleMenuClose(setAnchorElUser)}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+              keepMounted
+              sx={{ mt: "45px" }}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center"><Trans>bar.{setting}</Trans></Typography>
+              {SETTINGS.map(({ key, action }) => (
+                <MenuItem key={key} onClick={handleMenuClose(setAnchorElUser, action)}>
+                  <Typography textAlign="center"><Trans>bar.{key}</Trans></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -163,4 +106,5 @@ function Bar() {
     </AppBar>
   );
 }
+
 export default Bar;

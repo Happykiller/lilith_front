@@ -41,3 +41,5 @@ coverage
 docs
 *.tar
 .env.local
+*.apk
+app-release-*

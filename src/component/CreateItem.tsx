@@ -1,143 +1,108 @@
-import * as React from 'react';
-import { Add } from '@mui/icons-material';
+// src\component\CreateItem.tsx
 import { useMutation } from "@apollo/client";
-import { Trans, useTranslation } from 'react-i18next';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Button, Chip, Divider, Grid, IconButton, TextField } from '@mui/material';
+import { Trans, useTranslation } from "react-i18next";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { Add, KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
+import { Button, Chip, Divider, Grid2, IconButton, TextField, CircularProgress, Alert } from "@mui/material";
 
-import { GQL } from '@src/common/gql';
-import { FlashStore, flashStore } from '@component/Flash';
-import { ContextStore, contextStore } from '@src/component/ContextStore';
+import { GQL } from "@src/common/gql";
+import { useFlashStore } from "@component/Flash";
+import { contextStore } from "@src/component/ContextStore";
 
 export const CreateItem = () => {
-  const [item, setItem] = React.useState({
-    label: null,
-    url: null,
-    description: null
-  });
   const { t } = useTranslation();
-  const flash:FlashStore = flashStore();
-  const context:ContextStore = contextStore();
-  const [formVisible, setFormVisible] = React.useState(false);
-  const [createItemSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_ITEM);
+  const flash = useFlashStore();
+  const context = contextStore();
 
-  if (error) return <p>`Error! ${error.message}`</p>;
+  const [formVisible, setFormVisible] = useState(false);
+  const [item, setItem] = useState({ name: "", url: "", description: "" });
+
+  const [createItem, { data, loading, error }] = useMutation(GQL.MUT_CREATE_ITEM);
+
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (data && isFirstRender.current) {
+      flash.open(t("createItem.created"));
+      setItem({ name: "", url: "", description: "" });
+      isFirstRender.current = false;
+    }
+  }, [data, flash, t]);
+
+  const toggleForm = useCallback(() => setFormVisible((prev) => !prev), []);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setItem((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      console.log(item)
+      createItem({ variables: { ...item, game_id: context.game_id } });
+    },
+    [item, createItem, context.game_id]
+  );
+
+  const isDisabled = useMemo(() => !item.name || item.name.length <= 3 || !context.id, [item.name, context.id]);
 
   return (
     <div>
       <Divider>
-        <Chip 
-          label={<Trans>createItem.title</Trans>}
-        />
-        {/* Open  */}
-        <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            setFormVisible(!formVisible);
-          }
-        }>
-          {formVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <Chip label={<Trans>createItem.title</Trans>} />
+        <IconButton onClick={toggleForm}>
+          {formVisible ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </IconButton>
       </Divider>
-      <form className="formCreateItem"
-        onSubmit={e => {
-          e.preventDefault();
-          createItemSmt({ variables: { 
-            name: item.label, 
-            url: item.url,
-            description: item.description,
-            game_id: context.game_id
-          } });
-          setItem({
-            label: null,
-            url: null,
-            description: null
-          });
-          flash.open(t('createItem.created'));
-        }}
-      >
-        <Grid
-          container
-          display={(formVisible) ? "flex" : "none"}
-        >
-          <Grid
-            item
-            xs={6}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+
+      {error && <Alert severity="error">{error.message}</Alert>}
+
+      <form className="formCreateItem" onSubmit={handleSubmit} style={{ display: formVisible ? "block" : "none" }}>
+        <Grid2 container spacing={2} padding={2}>
+          <Grid2 size={6}>
             <TextField
+              name="name"
               label={<Trans>createItem.label</Trans>}
               variant="standard"
               size="small"
-              value={item.label??''}
-              onChange={(e) => { setItem({
-                  ... item,
-                  label: e.target.value
-                }) 
-              }}
+              fullWidth
+              value={item.name}
+              onChange={handleChange}
             />
-          </Grid>
+          </Grid2>
 
-          <Grid
-            item
-            xs={6}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid2 size={6}>
             <TextField
+              name="url"
               label={<Trans>createItem.url</Trans>}
               variant="standard"
               size="small"
-              value={item.url??''}
-              onChange={(e) => { setItem({
-                ... item,
-                url: e.target.value
-              }) 
-            }}
+              fullWidth
+              value={item.url}
+              onChange={handleChange}
             />
-          </Grid>
+          </Grid2>
 
-          <Grid
-            item
-            xs={12}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid2 size={12}>
             <TextField
+              name="description"
               label={<Trans>createItem.description</Trans>}
               variant="standard"
+              multiline
+              minRows={3}
               fullWidth
-              value={item.description??''}
-              onChange={(e) => { setItem({
-                ... item,
-                description: e.target.value
-              }) 
-            }}
+              value={item.description}
+              onChange={handleChange}
             />
-          </Grid>
+          </Grid2>
 
-          <Grid
-            item
-            xs={12}
-            m={1}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Button 
-              type="submit"
-              variant="contained"
-              size="small"
-              startIcon={<Add />}
-              disabled={!(item && item.label?.length > 3) || context.id === null}
-            ><Trans>common.create</Trans></Button>
-          </Grid>
-        </Grid>
+          <Grid2 size={12} display="flex" justifyContent="center">
+            <Button type="submit" variant="contained" size="small" startIcon={<Add />} disabled={isDisabled}>
+              {loading ? <CircularProgress size={20} /> : <Trans>common.create</Trans>}
+            </Button>
+          </Grid2>
+        </Grid2>
       </form>
     </div>
   );

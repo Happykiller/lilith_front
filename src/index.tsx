@@ -1,56 +1,39 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+
+import ReactDOM from 'react-dom/client';
 import { createClient } from 'graphql-ws';
-import { createRoot } from 'react-dom/client';
 import { split, HttpLink } from "@apollo/client";
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import { setContext } from "@apollo/client/link/context";
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { ApolloProvider, DefaultOptions } from "@apollo/client";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import '@src/i18n';
 import '@src/index.scss';
-import { Play } from '@page/PLay';
-import { Home } from '@page/Home';
-import { Admin } from '@page/Admin';
-import Flash from '@component/Flash';
-import { Guard } from '@component/Guard';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/admin",
-    element: <Guard><Admin /></Guard>,
-  },
-  {
-    path: "/play",
-    element: <Guard><Play /></Guard>,
-  }
-]);
+import App from '@src/App';
+import getTheme from '@src/theme';
 
 const getToken = () => {
   let token = process.env.APP_API_TOKEN;
   try {
-    const lilithStorage = JSON.parse(sessionStorage.getItem("lilith-storage"));
+    const lilithStorage = JSON.parse(sessionStorage.getItem("lilith-storage") ?? '');
     token = lilithStorage.state.accessToken;
-  } catch (e) {}
+  } catch (e) { }
   return token;
 }
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: process.env.APP_WS_URL,
+  url: process.env.APP_WS_URL ?? '',
   lazy: true,
   connectionParams: async () => {
     return {
       Authorization: `Bearer ${getToken()}`
     };
-},
+  },
 }));
 
 const httpLink = new HttpLink({
@@ -131,18 +114,28 @@ export const apolloClient = new ApolloClient({
   defaultOptions
 });
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+const Index: React.FC = () => {
+  // State to determine whether dark mode is enabled
+  const [darkMode] = useState(true);
 
-createRoot(document.getElementById("root")).render(
-  <ApolloProvider client={apolloClient}>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <RouterProvider router={router} />
-      <Flash/>
-    </ThemeProvider>
-  </ApolloProvider>
-);
+  // Create the theme based on the current mode (dark or light)
+  const theme = getTheme(darkMode ? 'dark' : 'light');
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Router>
+        {/* Provide the theme to the entire application */}
+        <ThemeProvider theme={theme}>
+          {/* Apply CSS baseline to ensure consistent styling across browsers */}
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </Router>
+    </ApolloProvider>
+  );
+};
+
+// Create a root for rendering with ReactDOM.createRoot
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+// Render the Index component into the root element
+root.render(<Index />);

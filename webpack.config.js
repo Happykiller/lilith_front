@@ -1,10 +1,12 @@
 const path = require("path");
 const dotenv = require('dotenv');
-const { DefinePlugin } = require('webpack');
-const HtmlWebpackPlugin = require("html-webpack-plugin") ;
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // Importer le plugin
+const webpack = require('webpack');
+const { version } = require('./package.json');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // Import MiniCssExtractPlugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const configuration = require("./src/config") ;
 
@@ -24,28 +26,6 @@ module.exports = (env, argv) => {
 
     // Entry point for the application. This is where Webpack starts bundling.
     entry: "./src/index.tsx",
-    
-    performance: {
-      hints: false,
-      maxEntrypointSize: 512000,
-      maxAssetSize: 512000
-    },
-
-    devServer: {
-      host: '0.0.0.0',
-
-      allowedHosts: "all",
-
-      port: configuration.config().APP_PORT,
-
-      // Serve static files from the 'public' directory.
-      static: {
-        directory: path.join(__dirname, 'public'),
-      },
-
-      // Redirect 404s to index.html to handle client-side routing
-      historyApiFallback: true,
-    },
 
     output: {
       // The name of the output bundle.
@@ -96,15 +76,43 @@ module.exports = (env, argv) => {
     },
 
     plugins: [
-      new CleanWebpackPlugin(),  // Nettoie le dossier dist avant chaque build
+      new FaviconsWebpackPlugin({
+        logo: './public/logo.png', // Chemin vers votre logo de base
+        mode: 'webapp', // Génère des icônes pour PWA
+        devMode: 'webapp', // Utilisation en développement
+        favicons: {
+          appName: 'Vergo Front',
+          appDescription: 'Fitness Coach',
+          developerName: 'Fabrice Rosito',
+          developerURL: null, // Peut être défini si vous souhaitez une URL
+          background: '#ffffff',
+          theme_color: '#3367D6',
+          icons: {
+            android: true, // Génère les icônes pour Android
+            appleIcon: true, // Génère les icônes Apple
+            appleStartup: false, // Pas nécessaire pour cette utilisation
+            favicons: true,
+            windows: false, // Peut être désactivé pour des besoins réduits
+            yandex: false // Pas nécessaire
+          }
+        }
+      }),
+
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: [
+          '**/*',        // Par défaut, nettoie tout le contenu de "dist"
+          'dist/src/',   // Spécifie explicitement la suppression du dossier "src" dans "dist"
+        ],
+        verbose: true, // Affiche les fichiers supprimés dans la console (utile pour le débogage)
+      }),  // Nettoie le dossier dist avant chaque build
 
       new HtmlWebpackPlugin({
         template: "./src/index.html",
         favicon: './public/favicon.ico',
-      }),
-
-      new DefinePlugin({
-        'process.env': JSON.stringify(configuration.config(dotenv.config().parsed))
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+        },
       }),
 
       new CopyWebpackPlugin({
@@ -113,9 +121,39 @@ module.exports = (env, argv) => {
         ],
       }),
 
+      // Define global constants for use in the application.
+      new webpack.DefinePlugin({
+        'process.env.APP_API_TOKEN': JSON.stringify(process.env.APP_API_TOKEN),
+        'process.env.APP_WS_URL': JSON.stringify(process.env.APP_WS_URL),
+        'process.env.APP_API_URL': JSON.stringify(process.env.APP_API_URL),
+        'process.env.VERSION': JSON.stringify(version),
+      }),
+
       isProduction && new MiniCssExtractPlugin({
         filename: 'styles.[contenthash].css' // Output CSS file
       }), // Only add plugin in production
-    ]
+    ],
+
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
+    },
+
+    devServer: {
+      host: '0.0.0.0',
+
+      allowedHosts: "all",
+
+      port: configuration.config().APP_PORT,
+
+      // Serve static files from the 'public' directory.
+      static: {
+        directory: path.join(__dirname, 'public'),
+      },
+
+      // Redirect 404s to index.html to handle client-side routing
+      historyApiFallback: true,
+    },
   }
 }

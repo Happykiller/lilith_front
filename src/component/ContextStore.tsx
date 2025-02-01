@@ -1,13 +1,14 @@
+// src\component\ContextStore.tsx
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface ContextStore {
-  id: string
-  code: string
-  accessToken: string
-  game_id: string
-  item_id: string,
-  current_vote: string,
+  id: string|null
+  code: string|null
+  accessToken: string|null
+  game_id: string|null
+  item_id: string|null
+  current_vote: string|null
   reset: () => void
 }
 

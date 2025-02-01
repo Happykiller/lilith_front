@@ -1,16 +1,15 @@
-import * as React from 'react';
+// src\component\Guard.tsx
+import { ReactNode } from "react";
 import { useLocation, Navigate } from "react-router-dom";
+import { contextStore } from "@component/ContextStore";
 
-import { ContextStore, contextStore } from '@component/ContextStore';
+interface GuardProps {
+  children: ReactNode;
+}
 
-export function Guard({ children }: { children: JSX.Element }) {
-  let location = useLocation();
-  
-  const context:ContextStore = contextStore();
+export function Guard({ children }: GuardProps) {
+  const location = useLocation();
+  const context = contextStore();
 
-  if (!context.id) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  } else {
-    return children;
-  }
+  return context.id ? children : <Navigate to="/" state={{ from: location }} replace />;
 }

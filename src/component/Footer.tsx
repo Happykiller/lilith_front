@@ -1,30 +1,30 @@
-import * as React from 'react';
-import { Trans } from 'react-i18next';
-import { useQuery } from '@apollo/client';
+import { Trans } from "react-i18next";
+import { useQuery } from "@apollo/client";
 
-import '@component/footer.scss';
-import { GQL } from '@src/common/gql';
-import { version } from '../../package.json';
+import "@component/footer.scss";
+import { GQL } from "@src/common/gql";
 
 export const Footer = () => {
-  let backVersion = '';
-  const respQry:{ loading:any, error?:any, data:any } = useQuery(GQL.QRY_SYSTEMINFO);
+  const { loading, error, data } = useQuery(GQL.QRY_SYSTEMINFO);
 
-  if (respQry.loading) {
-    backVersion = 'Loading...';
-  }
-  if (respQry.error) {
-    backVersion = `Error! ${respQry.error.message}`;
-  }
-  if (!respQry.data) {
-    backVersion = 'Nothing';
-  } else {
-    backVersion = respQry.data.systemInfo.version;
-  }
+  const backVersion = loading
+    ? "Loading..."
+    : error
+    ? `Error! ${error.message}`
+    : data?.systemInfo?.version ?? "Nothing";
 
   return (
-    <div className='footer'>
-      Projet Lilith - <a href="mailto:fabrice.rosito@gmail.com">Envoyer Email</a> - <Trans>version.front</Trans>{version} - <Trans>version.back</Trans>{backVersion} - <a href="https://github.com/Happykiller/lilith_front/issues" target="_blank"><Trans>footer.issues</Trans></a>  - <a href="https://github.com/users/Happykiller/projects/1/views/1" target="_blank"><Trans>footer.roadmap</Trans></a>
+    <div className="footer">
+      Lilith
+      &nbsp;- <a href="mailto:fabrice.rosito@gmail.com">Email</a>
+      &nbsp;- <Trans>version.front</Trans> {process.env.VERSION ?? "N/A"}
+      &nbsp;- <Trans>version.back</Trans> {backVersion}
+      &nbsp;- <a href="https://github.com/Happykiller/lilith_front/issues" target="_blank" rel="noopener noreferrer">
+        <Trans>footer.issues</Trans>
+      </a>
+      &nbsp;- <a href="https://github.com/users/Happykiller/projects/1/views/1" target="_blank" rel="noopener noreferrer">
+        <Trans>footer.roadmap</Trans>
+      </a>
     </div>
-  )
-}
+  );
+};

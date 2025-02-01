@@ -7,7 +7,8 @@
   },
   "bar": {
     "games": "Games",
-    "logout": "Logout"
+    "logout": "Logout",
+    "settings": "Settings"
   },
   "common": {
     "cancel": "Cancel",
@@ -15,7 +16,7 @@
     "done": "Submit",
     "error": "Error: ",
     "loading": "Loading...",
-    "nothing": "Please contact the administrator"
+    "nothing": "None game"
   },
   "createItem": {
     "created": "Creation successful",

@@ -1,260 +1,101 @@
-import * as React from 'react';
+// src/component/Item.tsx
+import { useMemo, useCallback } from "react";
 import { useMutation } from "@apollo/client";
-import { Trans, useTranslation } from 'react-i18next';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Bolt, RestartAlt, Visibility } from '@mui/icons-material';
-import { Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { Trans, useTranslation } from "react-i18next";
+import { OpenInNew as OpenInNewIcon, Visibility } from "@mui/icons-material";
+import { Button, Chip, Divider, Grid2, IconButton, Tooltip } from "@mui/material";
 
 import '@component/item.scss';
-import { GQL } from '@src/common/gql';
-import { CreateVote } from '@component/CreateVote';
-import { ContextStore, contextStore } from '@component/ContextStore';
+import { GQL } from "@src/common/gql";
+import { Vote } from '@component/Vote';
+import { contextStore } from "@component/ContextStore";
 
-export const Item = (param: {
-  game: any
-}) => {
+export const Item = ({ game }: { game: any }) => {
   const { t } = useTranslation();
-  const context:ContextStore = contextStore();
-  const [resetSmt] = useMutation(GQL.MUT_RESET);
-  const [revealSmt] = useMutation(GQL.MUT_REVEAL);
+  const context = contextStore();
+  const [resetVote] = useMutation(GQL.MUT_RESET);
+  const [revealItem] = useMutation(GQL.MUT_REVEAL);
 
-  const getImageForVote = (vote: string) => {
-    const index = param.game.voting.indexOf(vote);
-    // Vous pouvez ici personnaliser l'URL en fonction du vote
-    return `public/${(index>11)?11:index}.png`; // Assurez-vous que les fichiers sont bien nommés en fonction des votes
-  };
+  const currentItem = useMemo(() => game.items.find((item: any) => item.id === context.item_id), [game, context.item_id]);
 
-  const Vote = (props: { args: any }) => {
-
-    let content = <div></div>;
-
-    if(props.args.state === 'NO_VOTED_AND_NOT_REVEAL') {
-      content = (
-        <div className="card">
-          <div className="rank">?</div>
-          <div className="suit"><Typography noWrap fontWeight="bold">{props.args.user.code}</Typography></div>
-        </div>
-      )
-    } else if(props.args.state === 'VOTED_AND_REVEAL') {
-      content = (
-        <div className="card" style={{ backgroundImage: `url(${getImageForVote(props.args.vote.vote)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-          <div className={`rank ${(props.args.winner===props.args.vote.vote)?'winner':''}`}>{props.args.vote.vote}</div>
-          <div className="suit"><Typography noWrap fontWeight="bold" sx={{
-        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Fond blanc semi-transparent
-        display: 'inline-block', // Pour que le fond prenne juste la taille du texte
-        padding: '3px', // Espacement interne pour le texte
-        borderRadius: '2px' // Coins arrondis
-      }}>{props.args.vote.author.code}</Typography></div>
-        </div>
-      )
-    } else if(props.args.state === 'VOTED_AND_NOT_REVEAL') {
-      content = (
-        <div className="card">
-          <div className="rank">:D</div>
-          <div className="suit"><Typography noWrap fontWeight="bold">{props.args.vote.author.code}</Typography></div>
-        </div>
-      )
-    } else if(props.args.state === 'VOTED') {
-      content = (
-        <div className="card" style={{ backgroundImage: `url(${getImageForVote(props.args.vote.vote)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-          <div className="rank">{props.args.vote.vote}</div>
-          <div className="suit">
-            <IconButton 
-              size="small"
-              title={t('item.reset')}
-              sx={{ 
-                color: "#018786", 
-                backgroundColor: "#F5EBFF"
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                resetSmt({ 
-                  variables: { 
-                    game_id: context.game_id,
-                    item_id: context.item_id,
-                    vote_id: props.args.vote.id
-                  } 
-                });
-              }}>
-              <RestartAlt/>
-            </IconButton>
-          </div>
-        </div>
-      )
-    } else if(props.args.state === 'HAVE_TO_VOTE') {
-      content = (
-        <CreateVote game={param.game}/>
-      )
+  const handleReveal = useCallback(() => {
+    if (context.game_id && context.item_id) {
+      revealItem({ variables: { game_id: context.game_id, item_id: context.item_id } });
     }
+  }, [context.game_id, context.item_id, revealItem]);
 
-    return (
-      <Grid
-        item
-        xs={3}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        {content}
-      </Grid>
-    )
-  }
+  const handleVoteReset = useCallback((voteId: string) => {
+    if (context.game_id && context.item_id) {
+      resetVote({ variables: { game_id: context.game_id, item_id: context.item_id, vote_id: voteId } });
+    }
+  }, [context.game_id, context.item_id, resetVote]);
 
-  if (context.item_id) {
-    const currentItem = param.game.items.find((item:any) => item.id === context.item_id);
+  const winnerVote = useMemo(() => {
+    if (currentItem?.state === "REVEAL") {
+      const voteCounts = currentItem.votes.reduce((acc: Record<string, number>, { vote }: any) => {
+        acc[vote] = (acc[vote] || 0) + 1;
+        return acc;
+      }, {});
 
-    if (currentItem) {
-      /**
-       * Reveal possible
-       * If not reveal and author of the item
-       */
-      let revealBt;
-      if (
-        currentItem.state !== 'REVEAL'
-        && param.game.members.includes(context.id)
-        && context.id === currentItem.author_id
-      ) {
-        revealBt = <Grid
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          marginTop={1}
+      return Object.keys(voteCounts).reduce((maxVote, vote) => (voteCounts[vote] > (voteCounts[maxVote] || 0) ? vote : maxVote), "");
+    }
+    return null;
+  }, [currentItem]);
+
+  if (!currentItem) return null;
+
+  return (
+    <div>
+      <Divider>
+        <Tooltip
+          title={
+            <>
+              <strong>{t("item.name")}: </strong> {currentItem.name} <br />
+              <strong>{t("item.author")}: </strong> {currentItem.author.code} <br />
+              <strong>{t("item.status")}: </strong> {currentItem.state} <br />
+              {currentItem.description && <strong>{t("item.description")}: </strong>}{currentItem.description}
+            </>
+          }
         >
-          <Button 
-            variant="contained"
-            size="small"
-            startIcon={<Visibility />}
-            onClick={e => { 
-              e.preventDefault();
-              revealSmt({ variables: { 
-                game_id: context.game_id,
-                item_id: context.item_id
-              } });
-            }}
-          ><Trans>item.reveal</Trans></Button>
-        </Grid>
-      } else {
-        revealBt = <p></p>
-      }
-
-      /**
-       * Cal stat
-       */
-      let winner:string = null;
-      if (currentItem.state === 'REVEAL') {
-        let choosen:any = {};
-        for (const vote of currentItem.votes) {
-          if(!choosen[vote.vote]){
-            choosen[vote.vote] = 1;
-          } else {
-            choosen[vote.vote]++;
-          }
-        }
-        let max = 0;
-        Object.keys(choosen).forEach((k) => {
-          if (choosen[k] > max) {
-            winner = k;
-            max = choosen[k];
-          }
-        });
-      }
-
-      let openBt = <></>;
-      if (currentItem.url){
-        openBt = (
-          <IconButton 
-            title={currentItem.url}
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(currentItem.url, '_blank');
-            }
-          }>
+          <Chip label={currentItem.name} />
+        </Tooltip>
+        {currentItem.url && (
+          <IconButton title={currentItem.url} onClick={() => window.open(currentItem.url, "_blank")}>
             <OpenInNewIcon />
           </IconButton>
-        )
-      }
+        )}
+      </Divider>
 
-      return <div>
-        <Divider>
-          <Tooltip title={
-            <>
-              Nom: {currentItem.name}<br/>
-              Autheur: {currentItem.author.code}<br/>
-              Statut: {currentItem.state}<br/>
-              {currentItem.description?`Description: ${currentItem.description}`:''}
-            </>
-          }>
-            <Chip 
-              label={currentItem.name}
-            />
-          </Tooltip>
-          {openBt}
-        </Divider>
-        {revealBt}
-        <Grid
-          container
-        >
-          {
-            /**
-             * View all member of game
-             */
-            param.game.members_obj.map((user: any) => {
-              const vote = currentItem.votes.find((vote:any) => vote.author_id === user.id);
-              if (currentItem.state !== 'REVEAL') {
-                if (!vote && user.id === context.id) {
-                  return (
-                    <Vote key={user.id} args={{
-                      user: user,
-                      state: 'HAVE_TO_VOTE'
-                    }}/>
-                  )
-                } else if (vote && vote.author_id === context.id) {
-                  return (
-                    <Vote key={user.id} args={{
-                      vote: vote,
-                      state: 'VOTED'
-                    }}/>
-                  )
-                } else if(vote) {
-                  return (
-                    <Vote key={vote.author.id} args={{
-                      vote: vote,
-                      state: 'VOTED_AND_NOT_REVEAL'
-                    }}/>
-                  )
-                } else { // !vote 
-                  return (
-                    <Vote key={user.id} args={{
-                      user: user,
-                      state: 'NO_VOTED_AND_NOT_REVEAL'
-                    }}/>
-                  )
-                }
-              } else {
-                // REVEAL
-                if (vote) {
-                  return (
-                    <Vote key={vote.author.id} args={{
-                      vote: vote,
-                      state: 'VOTED_AND_REVEAL',
-                      winner
-                    }}/>
-                  )
-                } else {
-                  <Vote key={user.id} args={{
-                    user: user,
-                    state: 'NO_VOTED_AND_REVEAL',
-                    winner
-                  }}/>
-                }
-              }
-            })
+      {currentItem.state !== "REVEAL" && game.members.includes(context.id) && context.id === currentItem.author_id && (
+        <Grid2 display="flex" justifyContent="center" alignItems="center" marginTop={1}>
+          <Button variant="contained" size="small" startIcon={<Visibility />} onClick={handleReveal}>
+            <Trans>item.reveal</Trans>
+          </Button>
+        </Grid2>
+      )}
+
+      <Grid2 container>
+        {game.members_obj.map((user: any) => {
+          const vote = currentItem.votes.find((v: any) => v.author_id === user.id);
+          let state = "NO_VOTED_AND_NOT_REVEAL";
+
+          if (currentItem.state !== "REVEAL") {
+            if (!vote && user.id === context.id) {
+              state = "HAVE_TO_VOTE";
+            } else if (vote && vote.author_id === context.id) {
+              state = "VOTED";
+            } else if (vote) {
+              state = "VOTED_AND_NOT_REVEAL";
+            }
+          } else if (vote) {
+            state = "VOTED_AND_REVEAL";
+          } else {
+            state = "NO_VOTED_AND_REVEAL";
           }
-        </Grid>
-      </div>
-    }
-    
-  } else {
-    return <p></p>
-  }
-}
+
+          return <Vote key={user.id} state={state} vote={vote} user={user} winner={winnerVote} game={game} onResetVote={handleVoteReset} />;
+        })}
+      </Grid2>
+    </div>
+  );
+};

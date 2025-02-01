@@ -1,167 +1,128 @@
-import * as React from 'react';
-import InputIcon from '@mui/icons-material/Input';
-import { Trans, useTranslation } from 'react-i18next';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+// src/component/Game.tsx
+import { Trans, useTranslation } from "react-i18next";
 import { useQuery, useSubscription } from "@apollo/client";
-import { Avatar, AvatarGroup, Box, Button, Chip, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { Input as InputIcon, OpenInNew as OpenInNewIcon } from "@mui/icons-material";
+import { Avatar, AvatarGroup, Grid2, Button, Tooltip, IconButton, Typography, Chip, Divider } from "@mui/material";
 
-import { GQL } from '@src/common/gql';
-import { Item } from '@component/Item';
-import { CreateItem } from '@component/CreateItem';
-import { ContextStore, contextStore } from '@component/ContextStore';
+import { GQL } from "@src/common/gql";
+import { Item } from "@component/Item";
+import { CreateItem } from "@component/CreateItem";
+import { contextStore } from "@component/ContextStore";
+
+interface GameModel {
+  id: string;
+  name: string;
+  author: { code: string };
+  members: string[];
+  members_obj: { id: string; code: string }[];
+  items: { id: string; name: string; author: { code: string }; state: string; description?: string; url?: string }[];
+}
 
 export const Game = () => {
   const { t } = useTranslation();
-  const context:ContextStore = contextStore();
-  
-  function stringAvatar(name: string) {
-    return {
-      sx: {
-        bgcolor: "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase(),
-      },
-      children: name.substring(0,3),
-    };
-  }
+  const context = contextStore();
+  const [game, setGame] = useState<GameModel | null>(null);
 
-  if (context.game_id) {
+  const { loading: queryLoading, error: queryError, data: queryData } = useQuery(GQL.QRY_GAME, {
+    variables: { game_id: context.game_id },
+    skip: !context.game_id,
+  });
 
-    const respQry:{ loading:any, error?:any, data:any } = useQuery(GQL.QRY_GAME, {
-      variables: {
-        game_id: context.game_id
-      },
-    });
+  const { data: subData } = useSubscription(GQL.SUB_GAME, {
+    variables: { game_id: context.game_id },
+    skip: queryLoading || !!queryError,
+  });
 
-    const respSub:{loading:any, error?:any, data?:any } = useSubscription(
-      GQL.SUB_GAME,
-      { 
-        variables: {
-          game_id: context.game_id
-        },
-        skip: respQry.loading || respQry.error
-      }
-    );
+  useEffect(() => {
+    if (queryData?.game) setGame(queryData.game);
+    if (subData?.subToGame) setGame(subData.subToGame);
+  }, [queryData, subData]);
 
-    if (respQry.loading && respSub.loading) return <p>Loading...</p>;
-    if (respQry.error) return <p>RespQry Error! {respQry.error.message}</p>;
-    if (respSub.error) return <p>RespSub Error! {respSub.error.message}</p>;
-    if (!respQry.data && !respSub.data) return <p>Nothing</p>;
+  const stringAvatar = useCallback((name: string) => ({
+    sx: {
+      bgcolor: `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0").toUpperCase()}`,
+    },
+    children: name.substring(0, 3),
+  }), []);
 
-    const data = {
-      game: respQry.data?.game || respSub.data?.subToGame
-    }
+  const handleItemClick = useCallback((itemId: string) => {
+    contextStore.setState({ item_id: itemId, current_vote: null });
+  }, []);
 
-    let formCreateItem;
-    if (
-      context.id
-      && data.game.members.includes(context.id)
-    ) {
-      formCreateItem = <CreateItem />
-    } else {
-      formCreateItem = <p></p>
-    }
+  const membersAvatars = useMemo(() => (
+    <AvatarGroup max={10}>
+      {game?.members_obj.map((member) => (
+        <Avatar {...stringAvatar(member.code)} title={member.code} key={member.id} />
+      ))}
+    </AvatarGroup>
+  ), [game, stringAvatar]);
 
-    let item = <p/>;
-    if (data.game && context.item_id ){
-      item = <Item
-        game={data.game}
-      />
-    }
+  if (!context.game_id) return <Trans>game.choose</Trans>;
+  if (queryLoading) return <p>Loading...</p>;
+  if (queryError) return <p>Error: {queryError.message}</p>;
 
-    return (
-      <Grid
-        minWidth={600}
-      >
-        <div className='play'>
-          <h1 title={t('game.author')+data.game.author.code}>{data.game.name}</h1>
-        </div>
-        <Grid
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          marginBottom={2}
-        >
-          <AvatarGroup max={10}>
-            {data.game.members_obj.map((member:any) => {
-              return (
-                <Avatar {...stringAvatar(member.code)} title={member.code} key={member.id}/>
-              )
-            })}
-          </AvatarGroup>
-        </Grid>
-        <Grid
-          marginBottom={1}
-        >
-          {formCreateItem}
-        </Grid>
-        <Divider>
-          <Chip label={<Trans>game.items</Trans>} />
-        </Divider>
-        <Grid
-          container
-          padding={1}
-        >
-          {data.game.items.map((item: any) => (
-            <Grid 
-              item 
-              xs={4}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              key={item.id}
-            >
-              {(context.item_id === item.id)?
-                <Button
-                  variant='contained'
-                  size="small"
-                  sx={{ textTransform: 'none' }}
-                  startIcon={<InputIcon />}
-                  disabled
-                >
-                  <Typography noWrap>{item.name.split(']')[item.name.split(']').length-1]??item.name}</Typography>
-                </Button>
-                :
-                <Tooltip 
-                  title={
-                    <>
-                      Nom: {item.name}<br/>
-                      Autheur: {item.author.code}<br/>
-                      Statut: {item.state}<br/>
-                      {item.description?`Description: ${item.description}`:''}
-                    </>
-                  }
-                >
-                    <Button
-                      variant={(item.state === 'REVEAL')?'outlined':'contained'}
-                      size="small"
-                      sx={{ textTransform: 'none' }}
-                      startIcon={<InputIcon />}
-                      onClick={(e) => {
-                        contextStore.setState({ item_id: item.id, current_vote: null });
-                      }}
-                    ><Typography noWrap>{item.name.split(']')[item.name.split(']').length-1]??item.name}</Typography></Button>
-                </Tooltip>
+  return game ? (
+    <Grid2 minWidth={600}>
+      <div className="play">
+        <h1 title={`${t("game.author")}${game.author.code}`}>{game.name}</h1>
+      </div>
+
+      <Grid2 display="flex" justifyContent="center" alignItems="center" marginBottom={2}>
+        {membersAvatars}
+      </Grid2>
+
+      <Grid2 marginBottom={1}>
+        {context.id && game.members.includes(context.id) ? <CreateItem /> : null}
+      </Grid2>
+
+      <Divider>
+        <Chip label={<Trans>game.items</Trans>} />
+      </Divider>
+
+      <Grid2 container padding={1}>
+        {game.items.map((item) => (
+          <Grid2 size={4} display="flex" justifyContent="center" alignItems="center" key={item.id}>
+            <Tooltip
+              title={
+                <>
+                  Nom: {item.name} <br />
+                  Auteur: {item.author.code} <br />
+                  Statut: {item.state} <br />
+                  {item.description ? `Description: ${item.description}` : ""}
+                </>
               }
-              {/* Open  */}
-              <Grid
-                display={(item.url)?'block':'none'}
+            >
+              <Button
+                variant={item.state === "REVEAL" ? "outlined" : "contained"}
+                size="small"
+                sx={{ textTransform: "none" }}
+                startIcon={<InputIcon />}
+                onClick={() => handleItemClick(item.id)}
+                disabled={context.item_id === item.id}
               >
-                <IconButton 
-                  title={item.url}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open(item.url, '_blank');
-                  }
-                }>
-                  <OpenInNewIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          ))}
-        </Grid>
-        {item}
-      </Grid>
-    );
-  } else {
-    return <Trans>game.choose</Trans>
-  }
-}
+                <Typography noWrap>{item.name.split("]").pop() ?? item.name}</Typography>
+              </Button>
+            </Tooltip>
+
+            {item.url && (
+              <IconButton
+                title={item.url}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(item.url, "_blank");
+                }}
+              >
+                <OpenInNewIcon />
+              </IconButton>
+            )}
+          </Grid2>
+        ))}
+      </Grid2>
+
+      {context.item_id && <Item game={game} />}
+    </Grid2>
+  ) : (
+    <p>Nothing</p>
+  );
+};

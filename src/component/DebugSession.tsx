@@ -1,13 +1,16 @@
-import * as React from 'react';
-import { ContextStore, contextStore } from '@src/component/ContextStore';
+// src\component\DebugSession.tsx
+import { useMemo } from "react";
+import { contextStore } from "@src/component/ContextStore";
 
 export const DebugGame = () => {
-  const store:ContextStore = contextStore();
-  if (process.env.APP_DEBUG) {
-    return (
-      <div>
-        Debug {JSON.stringify(store)}
-      </div>
-    );
-  }
-}
+  if (!process.env.APP_DEBUG) return null;
+
+  const store = useMemo(() => contextStore(), []);
+
+  return (
+    <div>
+      <strong>Debug:</strong>
+      <pre>{JSON.stringify(store, null, 2)}</pre>
+    </div>
+  );
+};

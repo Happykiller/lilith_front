@@ -1,60 +1,42 @@
-import * as React from 'react';
-import { create } from 'zustand';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+// src\component\Flash.tsx
+import { create } from "zustand";
+import { useCallback } from "react";
+import { Snackbar, IconButton } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 
-export interface FlashStore {
-  visible: boolean,
-  msg: string,
-  close: () => void,
-  open: (msg: string) => void
+interface FlashStore {
+  visible: boolean;
+  msg: string | null;
+  close: () => void;
+  open: (msg: string) => void;
 }
 
-export const flashStore = create<FlashStore>((set) => ({
+export const useFlashStore = create<FlashStore>((set) => ({
   visible: false,
   msg: null,
-  close: () => set((state:FlashStore) => ({ visible: false })),
-  open: (msg: string) => set((state:FlashStore) => ({ 
-    visible: true,
-    msg
-  }))
-}))
+  close: () => set({ visible: false, msg: null }),
+  open: (msg: string) => set({ visible: true, msg }),
+}));
 
 export default function Flash() {
-  const flash:FlashStore = flashStore();
+  const { visible, msg, close } = useFlashStore();
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    flash.close();
-  };
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
+  const handleClose = useCallback((event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason !== "clickaway") close();
+  }, [close]);
 
   return (
-    <div>
-      <Snackbar
-        anchorOrigin={{vertical: 'bottom', horizontal:'right'}}
-        open={flash.visible}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={flash.msg}
-        action={action}
-      />
-    </div>
+    <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      open={visible}
+      autoHideDuration={6000}
+      onClose={handleClose}
+      message={msg}
+      action={
+        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      }
+    />
   );
 }

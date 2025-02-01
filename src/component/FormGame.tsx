@@ -1,79 +1,62 @@
-import * as React from 'react';
-import { Trans } from 'react-i18next';
-import { Add } from '@mui/icons-material';
+import { Trans } from "react-i18next";
+import { Add } from "@mui/icons-material";
 import { useMutation } from "@apollo/client";
-import { Box, Button, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { useState, useCallback, useMemo } from "react";
+import { Box, Button, MenuItem, Select, SelectChangeEvent, TextField, CircularProgress, Alert } from "@mui/material";
 
-import { GQL } from '@src/common/gql';
+import { GQL } from "@src/common/gql";
 
 export const FormGame = () => {
-  let enumList: any = [
-    ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '?', 'coffee'],
-    ['1', '3', '5', '8', '13', '21', '24', '34', '55', '89', '?', 'coffee'],
-    ['0.5', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'coffee'],
-    ['1', '2', '4', '8', '16', '32', '64', '?', 'coffee'],
-    ['1', '2', '3', '4', '5', '6', '7', '8', '10', '13']
-  ];
-  const [name, setName] = React.useState('');
-  const [voting, setVoting] = React.useState('0');
-  const [createGameSmt, { data, loading, error }] = useMutation(GQL.MUT_CREATE_GAME);
+  const enumList = useMemo(() => [
+    ["XXS", "XS", "S", "M", "L", "XL", "XXL", "?", "coffee"],
+    ["1", "3", "5", "8", "13", "21", "24", "34", "55", "89", "?", "coffee"],
+    ["0.5", "1", "2", "3", "5", "8", "13", "20", "40", "100", "?", "coffee"],
+    ["1", "2", "4", "8", "16", "32", "64", "?", "coffee"],
+    ["1", "2", "3", "4", "5", "6", "7", "8", "10", "13"]
+  ], []);
 
-  if (error) return <p>`Error! ${error.message}`</p>;
+  const [name, setName] = useState("");
+  const [voting, setVoting] = useState("0");
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const [createGame, { loading, error }] = useMutation(GQL.MUT_CREATE_GAME);
+
+  const handleChange = useCallback((event: SelectChangeEvent) => {
     setVoting(event.target.value);
-  };
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      createGame({ variables: { name, voting: enumList[parseInt(voting)] } });
+      setName("");
+    },
+    [name, voting, createGame, enumList]
+  );
 
   return (
     <div>
-      <form className="formCreateGame"
-        onSubmit={e => {
-          e.preventDefault();
-          createGameSmt({ 
-            variables: { 
-              name: name,
-              voting: enumList[parseInt(voting)]
-            } 
-          });
-          setName('');
-        }}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          sx={{ 
-            flexDirection: 'column',
-            gap: '10px;'
-          }}
-        >
+      {error && <Alert severity="error">{error.message}</Alert>}
+
+      <form className="formCreateGame" onSubmit={handleSubmit}>
+        <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
           <TextField
-            sx={{ marginRight:1}}
             label={<Trans>formGame.game.label</Trans>}
             variant="standard"
             size="small"
+            fullWidth
             value={name}
-            onChange={(e) => { setName(e.target.value) }}
+            onChange={(e) => setName(e.target.value)}
           />
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={voting}
-            label="Age"
-            onChange={handleChange}
-          >
-            <MenuItem value='0'>XXS, XS, S, M, L, XL, XXL, ?, coffee</MenuItem>
-            <MenuItem value='1'>1, 3, 5, 8, 13, 21, 24, 34, 55, 89, ?, coffee</MenuItem>
-            <MenuItem value='2'>0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, ?, coffee</MenuItem>
-            <MenuItem value='3'>1, 2, 4, 8, 16, 32, 64, ?, coffee</MenuItem>
-            <MenuItem value='4'>1, 2, 3, 4, 5, 6, 7, 8, 10, 13</MenuItem>
+          <Select value={voting} onChange={handleChange} fullWidth>
+            {enumList.map((option, index) => (
+              <MenuItem key={index} value={index.toString()}>
+                {option.join(", ")}
+              </MenuItem>
+            ))}
           </Select>
-          <Button 
-            type="submit"
-            variant="contained"
-            size="small"
-            disabled={!(name && name.length > 3)}
-            startIcon={<Add />}
-          ><Trans>common.create</Trans></Button>
+          <Button type="submit" variant="contained" size="small" disabled={name.length <= 3 || loading} startIcon={<Add />}>
+            {loading ? <CircularProgress size={20} /> : <Trans>common.create</Trans>}
+          </Button>
         </Box>
       </form>
     </div>

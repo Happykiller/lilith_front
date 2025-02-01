@@ -7,3 +7,38 @@ dist
 .idea
 .env.local
 lilith_front.tar
+
+# Clé de signature Android
+android-keystore.jks
+
+# Fichiers générés par Bubblewrap et Gradle
+node_modules/
+.twa-build/
+app/build/
+gradle/
+gradlew
+gradlew.bat
+local.properties
+.gradle/
+build.gradle
+gradle.properties
+settings.gradle
+store_icon.png
+
+# Fichiers de cache et logs
+.idea/
+*.log
+*.iml
+
+# Fichiers spécifiques à Android Studio
+app/.cxx/
+app/.gradle/
+app/build/
+app/src/debug/
+app/src/main/assets/
+app/src/main/res/raw/
+app/src/main/java/com/example/twa/
+app/
+*.apk
+manifest-checksum.txt
+app-release-*
