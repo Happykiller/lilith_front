@@ -7,8 +7,8 @@ import { Button, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { Input as InputIcon, ContentCopy, Logout as LogoutIcon } from '@mui/icons-material';
 
 import { GQL } from '@src/common/gql';
-import { useFlashStore } from '@component/Flash';
-import { contextStore } from '@component/ContextStore';
+import { contextStore } from '@src/stores/ContextStore';
+import { useFlashStore } from "@happykiller/sunny-ui";
 
 interface GameModel {
   id: string | null;

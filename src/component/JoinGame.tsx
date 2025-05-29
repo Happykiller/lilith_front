@@ -6,7 +6,7 @@ import { Input as InputIcon } from "@mui/icons-material";
 import { Box, Button, TextField, Alert } from "@mui/material";
 
 import { GQL } from "@src/common/gql";
-import { contextStore } from "@component/ContextStore";
+import { contextStore } from "@src/stores/ContextStore";
 
 export const JoinGame = () => {
   const context = contextStore();

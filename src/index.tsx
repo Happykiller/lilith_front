@@ -1,33 +1,39 @@
-import React, { useState } from 'react';
+// src\index.tsx
+/// <reference path="./theme/mui.d.ts" />
+import '@fontsource/roboto';
+import '@fontsource/montserrat';
+import '@fontsource/roboto/400.css';
+import '@fontsource/montserrat/600.css';
 
+import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createClient } from 'graphql-ws';
 import { split, HttpLink } from "@apollo/client";
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { ApolloProvider, DefaultOptions } from "@apollo/client";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 
-import '@src/i18n';
-import '@src/index.scss';
 import App from '@src/App';
-import getTheme from '@src/theme';
+import initI18n from '@src/i18n';
+import config from '@src/config';
+import { getTheme } from '@src/theme';
+import { contextStore } from '@stores/ContextStore';
 
 const getToken = () => {
-  let token = process.env.APP_API_TOKEN;
+  let token = config.token;
   try {
-    const lilithStorage = JSON.parse(sessionStorage.getItem("lilith-storage") ?? '');
+    const lilithStorage = JSON.parse(localStorage.getItem("lilith-storage") ?? '');
     token = lilithStorage.state.accessToken;
   } catch (e) { }
   return token;
 }
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: process.env.APP_WS_URL ?? '',
+  url: config.ws_url ?? '',
   lazy: true,
   connectionParams: async () => {
     return {
@@ -37,7 +43,7 @@ const wsLink = new GraphQLWsLink(createClient({
 }));
 
 const httpLink = new HttpLink({
-  uri: process.env.APP_API_URL
+  uri: config.api_url
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -115,11 +121,8 @@ export const apolloClient = new ApolloClient({
 });
 
 const Index: React.FC = () => {
-  // State to determine whether dark mode is enabled
-  const [darkMode] = useState(true);
-
-  // Create the theme based on the current mode (dark or light)
-  const theme = getTheme(darkMode ? 'dark' : 'light');
+  const themeMode = contextStore((s) => s.themeMode);
+  const theme = useMemo(() => getTheme(themeMode), [themeMode]);
 
   return (
     <ApolloProvider client={apolloClient}>
@@ -135,7 +138,10 @@ const Index: React.FC = () => {
   );
 };
 
-// Create a root for rendering with ReactDOM.createRoot
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-// Render the Index component into the root element
-root.render(<Index />);
+// Initialize i18n and then render the app
+initI18n().then(() => {
+  // Create a root for rendering with ReactDOM.createRoot
+  const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+  // Render the Index component into the root element
+  root.render(<Index />);
+});

@@ -8,7 +8,7 @@ import { Avatar, AvatarGroup, Grid2, Button, Tooltip, IconButton, Typography, Ch
 import { GQL } from "@src/common/gql";
 import { Item } from "@component/Item";
 import { CreateItem } from "@component/CreateItem";
-import { contextStore } from "@component/ContextStore";
+import { contextStore } from "@src/stores/ContextStore";
 
 interface GameModel {
   id: string;

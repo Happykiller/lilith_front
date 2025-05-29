@@ -5,10 +5,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { OpenInNew as OpenInNewIcon, Visibility } from "@mui/icons-material";
 import { Button, Chip, Divider, Grid2, IconButton, Tooltip } from "@mui/material";
 
-import '@component/item.scss';
 import { GQL } from "@src/common/gql";
 import { Vote } from '@component/Vote';
-import { contextStore } from "@component/ContextStore";
+import { contextStore } from "@src/stores/ContextStore";
 
 export const Item = ({ game }: { game: any }) => {
   const { t } = useTranslation();

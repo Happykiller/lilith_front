@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { IconButton, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 import { GQL } from '@src/common/gql';
-import { ContextStore, contextStore } from '@component/ContextStore';
+import { ContextStore, contextStore } from '@src/stores/ContextStore';
 
 export const CreateVote = (param: {
   game: any

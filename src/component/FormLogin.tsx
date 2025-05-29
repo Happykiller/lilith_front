@@ -5,9 +5,8 @@ import { useState, useCallback, useMemo } from "react";
 import { Cancel, Done, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, IconButton, InputAdornment, TextField, Alert } from "@mui/material";
 
-import "@component/formLogin.scss";
 import { GQL } from "@src/common/gql";
-import { contextStore } from "@src/component/ContextStore";
+import { contextStore } from "@src/stores/ContextStore";
 
 export const FormLogin = () => {
   const context = contextStore();
@@ -48,7 +47,7 @@ export const FormLogin = () => {
 
   if (!context.code) {
     return (
-      <form className="containerFormLogin" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
           <TextField
             label={<Trans>formLogin.login.label</Trans>}
@@ -95,7 +94,7 @@ export const FormLogin = () => {
     );
   } else {
     return (
-      <form className="containerFormLogin" onSubmit={(e) => {
+      <form onSubmit={(e) => {
         e.preventDefault();
         reset();
       }}>

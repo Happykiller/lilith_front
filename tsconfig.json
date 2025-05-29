@@ -14,10 +14,9 @@
     "paths": {
       "@src/*": ["src/*"], 
       "@page/*": ["src/page/*"], 
-      "@component/*": ["src/component/*"], 
-      "@usecases/*": ["src/usecases/*"],
-      "@services/*": ["src/services/*"],
-      "@stores/*": ["src/stores/*"]
+      "@stores/*": ["src/stores/*"],
+      "@component/*": ["src/component/*"],
+      "@components/*": ["src/components/*"],
     },
     "sourceMap": true,                           // Generate source maps for debugging
     "declaration": true,                         // Generate declaration files (.d.ts)
