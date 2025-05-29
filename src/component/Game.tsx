@@ -93,16 +93,18 @@ export const Game = () => {
                 </>
               }
             >
-              <Button
-                variant={item.state === "REVEAL" ? "outlined" : "contained"}
-                size="small"
-                sx={{ textTransform: "none" }}
-                startIcon={<InputIcon />}
-                onClick={() => handleItemClick(item.id)}
-                disabled={context.item_id === item.id}
-              >
-                <Typography noWrap>{item.name.split("]").pop() ?? item.name}</Typography>
-              </Button>
+              <span>
+                <Button
+                  variant={item.state === "REVEAL" ? "outlined" : "contained"}
+                  size="small"
+                  sx={{ textTransform: "none" }}
+                  startIcon={<InputIcon />}
+                  onClick={() => handleItemClick(item.id)}
+                  disabled={context.item_id === item.id}
+                >
+                  <Typography noWrap>{item.name.split("]").pop() ?? item.name}</Typography>
+                </Button>
+              </span>
             </Tooltip>
 
             {item.url && (

@@ -39,7 +39,6 @@ export const CreateItem = () => {
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(item)
       createItem({ variables: { ...item, game_id: context.game_id } });
     },
     [item, createItem, context.game_id]
