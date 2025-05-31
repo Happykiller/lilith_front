@@ -1,7 +1,7 @@
 // src/components/vues/Login.tsx
-import { useState, useCallback, useMemo } from "react";
 import { Trans } from "react-i18next";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import {
   Login as LoginIcon,
   Cancel,
@@ -29,6 +29,7 @@ import { contextStore } from "@stores/ContextStore";
 export const Login = () => {
   const theme = useTheme();
   const context = contextStore();
+  const navigate = useNavigate();
   const reset = contextStore((s) => s.reset);
   const logoSrc = theme.palette.mode === 'dark' ? '/logo_dark.png' : '/logo_light.png';
 
@@ -46,7 +47,7 @@ export const Login = () => {
     },
   });
 
-  const handleSubmit = useCallback(
+  const handleSubmitCode = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
       executeQuery({
@@ -59,6 +60,11 @@ export const Login = () => {
     [executeQuery, login, secret]
   );
 
+  const handleSubmitEnter = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    navigate("/");
+  }, [navigate]);
+
   const errorMessage = useMemo(() => {
     return error ? (
       <Alert severity="error" sx={{ mt: 2 }}>
@@ -68,6 +74,18 @@ export const Login = () => {
   }, [error]);
 
   const connected = !!context.code;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && connected) {
+        e.preventDefault();
+        navigate("/");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [connected, navigate]);
 
   return (
     <Box
@@ -126,7 +144,7 @@ export const Login = () => {
           <Trans>home.title</Trans>
         </Typography>
 
-        <form onSubmit={connected ? (e) => { e.preventDefault(); reset(); } : handleSubmit}>
+        <form onSubmit={connected ? handleSubmitEnter : handleSubmitCode}>
           <Grid container spacing={2}>
             {!connected && (
               <>
@@ -185,19 +203,21 @@ export const Login = () => {
               </Grid>
               <Grid size={6} textAlign="center">
                 <Button
-                  type="submit"
-                  variant="contained"
+                  type="button"
+                  variant="outlined"
                   startIcon={<Cancel />}
                   size="small"
+                  onClick={
+                    (e) => { e.preventDefault(); reset(); }
+                  }
                 >
                   <Trans>common.cancel</Trans>
                 </Button>
               </Grid>
               <Grid size={6} textAlign="center">
                 <Button
-                  component={Link}
-                  to="/"
-                  variant="outlined"
+                  type="submit"
+                  variant="contained"
                   startIcon={<LoginIcon />}
                   size="small"
                 >

@@ -82,6 +82,10 @@ module.exports = (env, argv) => {
           version: version,
         }),
       }),
+
+      isProduction && new MiniCssExtractPlugin({
+        filename: 'styles.[contenthash].css' // Output CSS file
+      }),
     ],
 
     devServer: {

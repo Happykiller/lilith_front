@@ -14,12 +14,9 @@
     top: 10px;
     left: 10px;
     font-size: 16px;
-    color: #01A982;
-  }
-
-  .winner {
-    color: #27ae60;
-    font-weight: bolder;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 4px;
+    padding: 2px 2px;
   }
 
   .suit {
@@ -31,10 +28,9 @@
 
     .user-badge {
       background-color: rgba(255, 255, 255, 0.85);
-      color: #1c1c1c;
       font-size: 11px;
       border-radius: 4px;
-      padding: 2px 4px;
+      padding: 2px 2px;
       display: inline-block;
       margin-bottom: 4px;
     }

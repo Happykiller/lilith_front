@@ -28,7 +28,7 @@ FROM nginx:alpine
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 # Copy static files (including your /public directory)
-COPY --from=build /usr/src/app/public /usr/share/nginx/html/public
+COPY --from=build /usr/src/app/src/public /usr/share/nginx/html/public
 
 # Copy nginx configuration
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf

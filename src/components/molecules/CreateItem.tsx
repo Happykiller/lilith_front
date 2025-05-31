@@ -1,7 +1,7 @@
 // src\components\molecules\CreateItem.tsx
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import { useTranslation, Trans } from "react-i18next";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import {
   Add,
   KeyboardArrowUp,
@@ -35,21 +35,17 @@ export const CreateItem = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [item, setItem] = useState({ name: "", url: "", description: "" });
 
-  const [createItem, { data, loading, error }] = useMutation(GQL.MUT_CREATE_ITEM);
-
-  const firstRender = useRef(true);
-
-  useEffect(() => {
-    if (data && firstRender.current) {
+  const [createItem, { loading, error }] = useMutation(GQL.MUT_CREATE_ITEM, {
+    onCompleted: () => {
       flash.open(t("createItem.created"));
       setItem({ name: "", url: "", description: "" });
-      firstRender.current = false;
-    }
-  }, [data, t, flash]);
+      setFormVisible(false);
+    },
+    errorPolicy: "all",
+  });
 
   const toggleForm = useCallback(() => {
     setFormVisible((prev) => !prev);
-    firstRender.current = true;
   }, []);
 
   const handleChange = useCallback(
