@@ -41,7 +41,7 @@ export const Login = () => {
       contextStore.setState({
         code: data.auth.code,
         id: data.auth.id,
-        accessToken: data.auth.accessToken,
+        access_token: data.auth.access_token,
       });
     },
   });
@@ -196,7 +196,7 @@ export const Login = () => {
               <Grid size={6} textAlign="center">
                 <Button
                   component={Link}
-                  to="/admin"
+                  to="/"
                   variant="outlined"
                   startIcon={<LoginIcon />}
                   size="small"

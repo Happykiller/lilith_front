@@ -5,11 +5,6 @@
     "title": "Games",
     "yourGames": "Your games"
   },
-  "bar": {
-    "games": "Games",
-    "logout": "Logout",
-    "settings": "Settings"
-  },
   "common": {
     "cancel": "Cancel",
     "create": "Create",
@@ -31,13 +26,12 @@
   "error": {
     "credentials_wrong": "Unable to authenticate"
   },
-  "footer": {
-    "issues": "Issues",
-    "roadmap": "Roadmap"
-  },
   "formGame": {
     "game": {
       "label": "Game name"
+    },
+    "voting": {
+      "label": "Possibilities"
     }
   },
   "formLogin": {
@@ -83,9 +77,5 @@
   },
   "play": {
     "title": "The game"
-  },
-  "version": {
-    "back": "API: ",
-    "front": "Web: "
   }
 }

@@ -27,7 +27,7 @@ const getToken = () => {
   let token = config.token;
   try {
     const lilithStorage = JSON.parse(localStorage.getItem("lilith-storage") ?? '');
-    token = lilithStorage.state.accessToken;
+    token = lilithStorage.state.access_token;
   } catch (e) { }
   return token;
 }

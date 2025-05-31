@@ -5,11 +5,6 @@
     "title": "Les parties",
     "yourGames": "Vos parties"
   },
-  "bar": {
-    "games": "Parties",
-    "logout": "Déconnexion",
-    "settings": "Options"
-  },
   "common": {
     "cancel": "Annuler",
     "create": "Créer",
@@ -23,7 +18,10 @@
     "description": "Description",
     "label": "Nom de l'élément",
     "title": "Créer un nouvel élément",
-    "url": "URL"
+    "url": "URL",
+    "label_tooltip": "Au moins 4 caractères",
+    "url_tooltip": "l'url de l'item",
+    "description_tooltip": "Balbla"
   },
   "createVote": {
     "vote": "Voter"
@@ -31,13 +29,12 @@
   "error": {
     "credentials_wrong": "Impossible de s'identifier"
   },
-  "footer": {
-    "issues": "Problèmes",
-    "roadmap": "Feuille de route"
-  },
   "formGame": {
     "game": {
       "label": "Nom de la partie"
+    },
+    "voting": {
+      "label": "Choix des possiblitées"
     }
   },
   "formLogin": {
@@ -54,7 +51,13 @@
     "author": "Auteur : ",
     "choose": "Veuillez choisir une partie",
     "items": "Éléments",
-    "members": "Membres : "
+    "members": "Membres : ",
+    "item": {
+      "name": "Nom : ",
+      "author": "Auteur : ",
+      "state": "Status : ",
+      "description": "Description : "
+    }
   },
   "games": {
     "copied": "Clé copiée",
@@ -83,9 +86,5 @@
   },
   "play": {
     "title": "La partie"
-  },
-  "version": {
-    "back": "API : ",
-    "front": "Web : "
   }
 }

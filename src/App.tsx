@@ -2,11 +2,12 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Play } from '@page/PLay';
-import { Admin } from '@page/Admin';
+import { Play } from '@components/vues/PLay';
+import { Admin } from '@components/vues/Admin';
 import { Login } from '@components/vues/Login';
 import { CGU, NotFound } from '@happykiller/sunny-ui';
 import { LayoutPublicExt } from '@components/layouts/LayoutPublicExt';
+import { LayoutProtectedExt } from '@components/layouts/LayoutProtectedExt';
 
 // Main application component
 const App: React.FC = () => {
@@ -21,13 +22,13 @@ const App: React.FC = () => {
         <Route path="/cgu" element={<LayoutPublicExt><CGU /></LayoutPublicExt>} />
 
         {/* Route for root */}
-        <Route path="/" element={<LayoutPublicExt><Login /></LayoutPublicExt>} />
+        <Route path="/login" element={<LayoutPublicExt><Login /></LayoutPublicExt>} />
 
         {/* Route for the login page */}
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={<LayoutProtectedExt><Admin /></LayoutProtectedExt>} />
 
         {/* Route for the profil page */}
-        <Route path="/play" element={<Play />} />
+        <Route path="/play" element={<LayoutProtectedExt><Play /></LayoutProtectedExt>} />
       </Routes>
     </div>
   );

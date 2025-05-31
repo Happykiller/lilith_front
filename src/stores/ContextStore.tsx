@@ -7,7 +7,7 @@ import { ThemeMode } from '@src/theme';
 export interface ContextStore {
   id: string|null
   code: string|null
-  accessToken: string|null
+  access_token: string|null
   game_id: string|null
   item_id: string|null
   current_vote: string|null
@@ -20,7 +20,7 @@ export interface ContextStore {
 const initialState:any = {
   id: null,
   code: null,
-  accessToken: null,
+  access_token: null,
   game_id: null,
   item_id: null,
   current_vote: null,

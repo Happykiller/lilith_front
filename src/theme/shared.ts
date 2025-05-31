@@ -45,7 +45,7 @@ export const createSharedComponents = (
   MuiButton: {
     styleOverrides: {
       root: {
-        borderRadius: 10,
+        borderRadius: sharedShape.borderRadius,
         fontWeight: 600,
         textTransform: 'none',
       },

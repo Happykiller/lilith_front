@@ -15,7 +15,7 @@
       "@src/*": ["src/*"], 
       "@page/*": ["src/page/*"], 
       "@stores/*": ["src/stores/*"],
-      "@component/*": ["src/component/*"],
+      "@usecases/*": ["src/usecases/*"],
       "@components/*": ["src/components/*"],
     },
     "sourceMap": true,                           // Generate source maps for debugging

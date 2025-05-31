@@ -39,7 +39,7 @@ module.exports = (env, argv) => {
         '@src': path.resolve(__dirname, 'src'),
         '@page': path.resolve(__dirname, 'src/page'),
         '@stores': path.resolve(__dirname, 'src/stores'),
-        '@component': path.resolve(__dirname, 'src/component'),
+        '@usecases': path.resolve(__dirname, 'src/usecases'),
         '@components': path.resolve(__dirname, 'src/components'),
       },
     },
