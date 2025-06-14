@@ -3,7 +3,7 @@ import { useMemo, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { Trans, useTranslation } from "react-i18next";
 import { OpenInNew as OpenInNewIcon, Visibility } from "@mui/icons-material";
-import { Button, Chip, Divider, Grid2, IconButton, Tooltip } from "@mui/material";
+import { Button, Chip, Divider, Grid, IconButton, Tooltip } from "@mui/material";
 
 import '@src/styles/item.scss';
 import { GQL } from "@src/common/gql";
@@ -67,14 +67,14 @@ export const Item = ({ game }: { game: any }) => {
       </Divider>
 
       {currentItem.state !== "REVEAL" && game.members.includes(context.id) && context.id === currentItem.author_id && (
-        <Grid2 display="flex" justifyContent="center" alignItems="center" marginTop={1}>
+        <Grid display="flex" justifyContent="center" alignItems="center" marginTop={1}>
           <Button variant="contained" size="small" startIcon={<Visibility />} onClick={handleReveal}>
             <Trans>item.reveal</Trans>
           </Button>
-        </Grid2>
+        </Grid>
       )}
 
-      <Grid2 container>
+      <Grid container>
         {game.members_obj.map((user: any) => {
           const vote = currentItem.votes.find((v: any) => v.author_id === user.id);
           let state = "NO_VOTED_AND_NOT_REVEAL";
@@ -95,7 +95,7 @@ export const Item = ({ game }: { game: any }) => {
 
           return <Vote key={user.id} state={state} vote={vote} user={user} winner={winnerVote} game={game} onResetVote={handleVoteReset} />;
         })}
-      </Grid2>
+      </Grid>
     </div>
   );
 };

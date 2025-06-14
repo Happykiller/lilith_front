@@ -1,7 +1,7 @@
 // src\components\molecules\GameItemGrid.tsx
 import { useCallback } from "react";
 import {
-  Grid2,
+  Grid,
   Button,
   Tooltip,
   IconButton,
@@ -32,9 +32,9 @@ export const GameItemGrid = ({ game }: GameItemGridProps) => {
   }, []);
 
   return (
-    <Grid2 container spacing={2}>
+    <Grid container spacing={2}>
       {game.items.map((item) => (
-        <Grid2
+        <Grid
           key={item.id}
           size={{
             xs: 12,
@@ -116,8 +116,8 @@ export const GameItemGrid = ({ game }: GameItemGridProps) => {
 
           </Tooltip>
 
-        </Grid2>
+        </Grid>
       ))}
-    </Grid2>
+    </Grid>
   );
 };

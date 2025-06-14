@@ -11,7 +11,7 @@ import {
   DriveFileRenameOutline as NameIcon,
 } from "@mui/icons-material";
 import {
-  Grid2,
+  Grid,
   Button,
   Collapse,
   Divider,
@@ -85,8 +85,8 @@ export const CreateItem = () => {
 
       <Collapse in={formVisible}>
         <form onSubmit={handleSubmit}>
-          <Grid2 container spacing={2} p={2}>
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+          <Grid container spacing={2} p={2}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Input
                 label={<Trans>createItem.label</Trans>}
                 tooltip={t("createItem.label_tooltip")}
@@ -101,9 +101,9 @@ export const CreateItem = () => {
                   help: <InfoIcon fontSize="small" />,
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Input
                 label={<Trans>createItem.url</Trans>}
                 placeholder="https://..."
@@ -116,9 +116,9 @@ export const CreateItem = () => {
                   help: <InfoIcon fontSize="small" />,
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid size={12}>
               <Input
                 label={<Trans>createItem.description</Trans>}
                 tooltip={t("createItem.description_tooltip")}
@@ -132,9 +132,9 @@ export const CreateItem = () => {
                   help: <InfoIcon fontSize="small" />,
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12} textAlign="center">
+            <Grid size={12} textAlign="center">
               <Button
                 type="submit"
                 variant="contained"
@@ -144,8 +144,8 @@ export const CreateItem = () => {
               >
                 {loading ? <CircularProgress size={20} /> : <Trans>common.create</Trans>}
               </Button>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </form>
       </Collapse>
     </Box>

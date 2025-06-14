@@ -13,7 +13,7 @@ import {
 import {
   Box,
   Button,
-  Grid2 as Grid,
+  Grid,
   Typography,
   Alert,
   useTheme

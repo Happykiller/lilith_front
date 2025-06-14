@@ -35,7 +35,8 @@
     },
     "voting": {
       "label": "Choix des possiblitées"
-    }
+    },
+    "success": "Création réussie"
   },
   "formLogin": {
     "login": {

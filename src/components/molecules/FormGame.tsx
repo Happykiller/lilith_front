@@ -46,6 +46,7 @@ export const FormGame = () => {
     onCompleted: () => {
       flash.success(t('formGame.success'));
       setName({ value: "", valid: false });
+      setVoting("0");
     },
     onError: (err) => {
       flash.open(err.message);

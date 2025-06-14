@@ -1,7 +1,7 @@
 // src\components\molecules\Vote.tsx
 import { useTranslation } from "react-i18next";
 import { RestartAlt } from "@mui/icons-material";
-import { Grid2, IconButton, Paper, useTheme } from "@mui/material";
+import { Grid, IconButton, Paper, useTheme } from "@mui/material";
 
 import { VoteStatus } from "@src/types/vote_status";
 import { CreateVote } from "@components/molecules/CreateVote";
@@ -11,9 +11,9 @@ export const Vote = ({ state, vote, user, winner, game, onResetVote }: any) => {
   const { t } = useTranslation();
 
   if (state === VoteStatus.HAVE_TO_VOTE) {
-    return <Grid2 size={3} display="flex" justifyContent="center" alignItems="center">
+    return <Grid size={3} display="flex" justifyContent="center" alignItems="center">
       <CreateVote game={game} />
-    </Grid2>;
+    </Grid>;
   }
 
   let cardStyle;
@@ -40,7 +40,7 @@ export const Vote = ({ state, vote, user, winner, game, onResetVote }: any) => {
   }
 
   return (
-    <Grid2 size={3} display="flex" justifyContent="center" alignItems="center">
+    <Grid size={3} display="flex" justifyContent="center" alignItems="center">
       <Paper
         className="card"
         sx={{
@@ -87,6 +87,6 @@ export const Vote = ({ state, vote, user, winner, game, onResetVote }: any) => {
           )}
         </div>
       </Paper>
-    </Grid2>
+    </Grid>
   );
 };

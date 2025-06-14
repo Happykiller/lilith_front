@@ -1,11 +1,13 @@
 // src\App.tsx
 import React from 'react';
+import { Close } from '@mui/icons-material';
 import { Routes, Route } from 'react-router-dom';
+
 
 import { Play } from '@components/vues/PLay';
 import { Admin } from '@components/vues/Admin';
 import { Login } from '@components/vues/Login';
-import { CGU, NotFound } from '@happykiller/sunny-ui';
+import { CGU, FlashMessage, NotFound } from '@happykiller/sunny-ui';
 import { LayoutPublicExt } from '@components/layouts/LayoutPublicExt';
 import { LayoutProtectedExt } from '@components/layouts/LayoutProtectedExt';
 
@@ -30,6 +32,7 @@ const App: React.FC = () => {
         {/* Route for the profil page */}
         <Route path="/play" element={<LayoutProtectedExt><Play /></LayoutProtectedExt>} />
       </Routes>
+      <FlashMessage icons={{ close: <Close fontSize="small" /> }} />
     </div>
   );
 }

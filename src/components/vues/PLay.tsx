@@ -7,7 +7,7 @@ import {
   AvatarGroup,
   Chip,
   Divider,
-  Grid2,
+  Grid,
   Typography,
 } from "@mui/material";
 
@@ -87,9 +87,9 @@ export const Play = () => {
   }
 
   return (
-    <Grid2 container direction="column" spacing={3}>
+    <Grid container direction="column" spacing={3}>
       {/* Header */}
-      <Grid2>
+      <Grid>
         <Typography
           variant="h5"
           component="h1"
@@ -99,38 +99,38 @@ export const Play = () => {
         >
           {game.name}
         </Typography>
-      </Grid2>
+      </Grid>
 
       {/* Avatars */}
-      <Grid2 display="flex" justifyContent="center">
+      <Grid display="flex" justifyContent="center">
         {membersAvatars}
-      </Grid2>
+      </Grid>
 
       {/* CreateItem */}
       {context.id && game.members.includes(context.id) && (
-        <Grid2>
+        <Grid>
           <CreateItem />
-        </Grid2>
+        </Grid>
       )}
 
       {/* Divider */}
-      <Grid2>
+      <Grid>
         <Divider>
           <Chip label={<Trans>game.items</Trans>} />
         </Divider>
-      </Grid2>
+      </Grid>
 
       {/* Items grid */}
-      <Grid2>
+      <Grid>
         <GameItemGrid game={game} />
-      </Grid2>
+      </Grid>
 
       {/* Item details */}
       {context.item_id && (
-        <Grid2>
+        <Grid>
           <Item game={game} />
-        </Grid2>
+        </Grid>
       )}
-    </Grid2>
+    </Grid>
   );
 };
